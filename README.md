@@ -206,24 +206,17 @@ node index.js
 
 <div align="center">
 
-### 🖥️ **Startup Banner**
-
-
-![Startup](https://i.postimg.cc/sgCz2D20/Screenshot-2025-07-23-124243.png)
-
-
-
-### 📱 **Help Menu**
-
-
-![Help Menu](https://i.postimg.cc/1X6cP51M/Screenshot-2025-07-20-221607.png)
-
-
-
 ### ⚡ **Command Execution**
 
 
-![Commands](https://i.postimg.cc/6pn6gSnw/Screenshot-2025-07-20-221659.png)
+![Commands](https://file.garden/ai5wJPrOLRCONDDM/execution.png)
+
+
+### 📱 **Command Categories**
+
+
+![Categories](https://file.garden/ai5wJPrOLRCONDDM/categories.jpg)
+
 
 </div>
 
