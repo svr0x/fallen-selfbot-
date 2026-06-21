@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="https://i.postimg.cc/ZKc6v48X/fallen-centre.png" alt="fallen Logo" width="200" height="200">
+<img src="https://file.garden/ai5wJPrOLRCONDDM/fallen.png" alt="fallen Logo" width="200" height="200">
 
 # ⚡ fallen Selfbot
 
-<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=28&duration=4000&pause=1000&color=00FFFF&center=true&vCenter=true&width=600&lines=Summoning+Silence...;A+Powerful+Discord+Selfbot;Multifunctional+%26+Feature-Rich;Built+with+ES6+" alt="Typing SVG" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=28&duration=4000&pause=1000&color=FF0000&center=true&vCenter=true&width=600&lines=fallen+cute+lang;pogi%2C+moreno%2C+maalaga%2C+cute" alt="Typing SVG" />
 
 [![Discord Server](https://img.shields.io/badge/Discord-Join%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/DWxCXT8ch5)
 [![GitHub stars](https://img.shields.io/github/stars/svr0x/fallen-selfbot-?color=yellow&style=for-the-badge)](https://github.com/svr0x/fallen-selfbot-/stargazers)
@@ -35,7 +35,7 @@
 
 **fallen** is an experimental, open-source, multifunctional Discord selfbot built with modern JavaScript and Discord.js-selfbot-v13. It features comprehensive command handling, advanced task management, and a wide array of utilities designed for power users.
 
-### ✨ **Key Features**
+1### ✨ **Key Features**
 
 <div align="center">
 
@@ -207,12 +207,22 @@ node index.js
 <div align="center">
 
 ### 🖥️ **Startup Banner**
+
+
 ![Startup](https://i.postimg.cc/sgCz2D20/Screenshot-2025-07-23-124243.png)
 
+
+
 ### 📱 **Help Menu**
+
+
 ![Help Menu](https://i.postimg.cc/1X6cP51M/Screenshot-2025-07-20-221607.png)
 
+
+
 ### ⚡ **Command Execution**
+
+
 ![Commands](https://i.postimg.cc/6pn6gSnw/Screenshot-2025-07-20-221659.png)
 
 </div>
@@ -500,9 +510,9 @@ If you find fallen useful, please consider supporting the project:
 
 <div align="center">
 
-### 🌟 **Made with ❤️ by [svr0x](https://github.com/svr0x) in India 🇮🇳**
+### 🌟 **Made with ❤️ by [svr0x](https://github.com/svr0x) in the Philippines 🇵🇭**
 
-**⚡ fallen - Summoning Silence ⚡**
+**⚡ fallen - selfbot  ⚡**
 
 [![Visitors](https://visitor-badge.laobi.icu/badge?page_id=svr0x.fallen-selfbot-)](https://github.com/svr0x/fallen-selfbot-)
 
