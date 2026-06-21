@@ -184,7 +184,7 @@ node index.js
 
 - `+spam` - Spam messages
 - `+stalk` - Stalk users
-- `+badreply` - Send random insults
+- `+cpack` - Send random insults [chatpack]
 - `+ghostping` - Ghost ping users
 
 </details>
@@ -205,6 +205,12 @@ node index.js
 ## 🎨 **Screenshots**
 
 <div align="center">
+
+### 📋 **Help Categories**
+
+
+![Help Categories](https://file.garden/ai5wJPrOLRCONDDM/helpcategories.jpg)
+
 
 ### ⚡ **Command Execution**
 
@@ -268,7 +274,7 @@ rpc:
   default:
     type: "PLAYING"
     name: "fallen Selfbot"
-    details: "Summoning Silence"
+    details: "cute lang"
     state: "github.com/svr0x"
     assets:
       large_image: "fallen"
@@ -440,7 +446,7 @@ npm run lint
 
 ## 🏆 **Achievements**
 
-- ⭐ **120+** Commands implemented
+- ⭐ **130+** Commands 
 - 🚀 **Advanced** task management system
 - 🛡️ **Robust** error handling and anti-crash
 - 🎯 **Rate limit** protection
