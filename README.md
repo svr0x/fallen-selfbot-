@@ -200,6 +200,19 @@ node index.js
 
 </details>
 
+<details>
+<summary><b>🌐 Hosting Commands</b></summary>
+
+- `+hosted <token> <prefix>` - Host another token as a selfbot with its own prefix
+- `+hosted stop <token>` - Stop a hosted token
+- `+hosted list` - List all currently hosted tokens
+- `+hts` - Show status of main account, hosted tokens, and alt token health
+- `+alts <token>` - Add an alt token (isolated per client)
+- `+alts list` - List your hosted alts
+- `+alts remove <token/id/username>` - Remove an alt
+
+</details>
+
 ---
 
 ## 🎨 **Screenshots**
