@@ -79,7 +79,6 @@ export default {
       );
     }
 
-    // Check role hierarchy (selfbot - user and bot are the same)
     if (
       targetRole.position >= message.member.roles.highest.position &&
       message.author.id !== message.guild.ownerId
@@ -175,7 +174,6 @@ export default {
       );
     }
 
-    // Check role hierarchy (selfbot - user and bot are the same)
     if (
       targetRole.position >= message.member.roles.highest.position &&
       message.author.id !== message.guild.ownerId
@@ -232,16 +230,10 @@ export default {
     await message.channel.send(listText);
   },
 
-  /**
-   * Check server boost level and role icon availability
-   * @param {Guild} guild - Discord guild object
-   * @returns {Object} Boost level information
-   */
-  checkBoostLevel(guild) {
+    checkBoostLevel(guild) {
     const boostCount = guild.premiumSubscriptionCount || 0;
     const boostLevel = guild.premiumTier || 0;
 
-    // Role icons require boost level 2 (8+ boosts)
     const canUseRoleIcons = boostLevel >= 2;
     const boostsNeeded = Math.max(0, 8 - boostCount);
 
@@ -253,14 +245,7 @@ export default {
     };
   },
 
-  /**
-   * Parse emoji input and validate
-   * @param {string} input - Emoji input string
-   * @param {Guild} guild - Discord guild object
-   * @returns {Object} Parsed emoji data
-   */
-  parseEmoji(input, guild) {
-    // Check if it's a custom emoji mention
+    parseEmoji(input, guild) {
     const customEmojiMatch = input.match(/<a?:(\w+):(\d+)>/);
     if (customEmojiMatch) {
       const [, name, id] = customEmojiMatch;
@@ -281,7 +266,6 @@ export default {
       }
     }
 
-    // Check if it's just an emoji ID
     if (/^\d+$/.test(input)) {
       const emoji = guild.emojis.cache.get(input);
       if (emoji) {

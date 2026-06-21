@@ -61,10 +61,7 @@ export default {
     }
   },
 
-  /**
-   * Add a new todo to the list
-   */
-  async addTodo(message, todoFile, todoText) {
+    async addTodo(message, todoFile, todoText) {
     try {
       const timestamp = new Date().toLocaleString();
       const todoEntry = `[${timestamp}] ${todoText}\n`;
@@ -89,10 +86,7 @@ export default {
     }
   },
 
-  /**
-   * List all todos
-   */
-  async listTodos(message, todoFile) {
+    async listTodos(message, todoFile) {
     try {
       if (!fs.existsSync(todoFile)) {
         return message.channel.send(
@@ -113,7 +107,6 @@ export default {
       const todos = todoContent.split("\n").filter((line) => line.trim());
       const todoCount = todos.length;
 
-      // Limit display to prevent message being too long
       const maxDisplay = 15;
       const displayTodos = todos.slice(-maxDisplay); // Show most recent todos
 
@@ -143,10 +136,7 @@ export default {
     }
   },
 
-  /**
-   * Clear all todos
-   */
-  async clearTodos(message, todoFile) {
+    async clearTodos(message, todoFile) {
     try {
       if (!fs.existsSync(todoFile)) {
         return message.channel.send(
@@ -189,10 +179,7 @@ export default {
     }
   },
 
-  /**
-   * Get the current number of todos
-   */
-  getTodoCount(todoFile) {
+    getTodoCount(todoFile) {
     try {
       if (!fs.existsSync(todoFile)) {
         return 0;

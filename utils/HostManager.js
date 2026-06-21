@@ -1,7 +1,3 @@
-/**
- * HostManager - Manages hosted selfbot tokens
- * Each hosted token runs as its own Client with its own prefix
- */
 
 import { Client } from 'discord.js-selfbot-v13';
 import { loadCommands } from '../handlers/CommandHandler.js';
@@ -15,7 +11,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DB_PATH = path.join(__dirname, '..', 'hosted.json');
 
-// In-memory map of hosted clients: token -> { client, prefix, username, status }
 export const hostedClients = new Map();
 
 function loadDB() {
@@ -30,18 +25,22 @@ function saveDB(entries) {
 
 export function getHostedDB() { return loadDB(); }
 
-/**
- * Start a hosted client
- * @param {string} token 
- * @param {string} prefix 
- * @param {string} ownerId - The main selfbot owner's Discord ID
- */
+export function getAllUsedPrefixes() {
+    const prefixes = new Set();
+    try {
+        const mainPrefix = loadConfig()?.selfbot?.prefix;
+        if (mainPrefix) prefixes.add(mainPrefix);
+    } catch {}
+    for (const [, data] of hostedClients) prefixes.add(data.prefix);
+    return prefixes;
+}
+
 export async function startHosted(token, prefix, ownerId) {
-    // Check prefix conflict
-    for (const [, data] of hostedClients) {
-        if (data.prefix === prefix) {
-            return { success: false, error: `Prefix "${prefix}" already in use by @${data.username}` };
-        }
+    const usedPrefixes = getAllUsedPrefixes();
+    if (usedPrefixes.has(prefix)) {
+        const conflictOwner = [...hostedClients.values()].find(d => d.prefix === prefix);
+        const who = conflictOwner ? `@${conflictOwner.username}` : 'the main account';
+        return { success: false, error: `Prefix "${prefix}" already in use by ${who}` };
     }
 
     // Check token already hosted
@@ -57,7 +56,6 @@ export async function startHosted(token, prefix, ownerId) {
         hostedClient.cooldowns = new Map();
         hostedClient.ownerId = ownerId;
 
-        // Auto-allow owner ID on this hosted client
         hostedClient._allowedUsers = [ownerId];
 
         await loadCommands(hostedClient);
@@ -71,7 +69,8 @@ export async function startHosted(token, prefix, ownerId) {
             username: hostedClient.user?.username || 'Unknown',
             id: hostedClient.user?.id || 'Unknown',
             startedAt: Date.now(),
-            status: 'online'
+            status: 'online',
+            ownerId,
         };
 
         hostedClients.set(token, { client: hostedClient, ...entry });
@@ -87,9 +86,6 @@ export async function startHosted(token, prefix, ownerId) {
     }
 }
 
-/**
- * Stop a hosted client by token
- */
 export async function stopHosted(token) {
     const data = hostedClients.get(token);
     if (!data) return { success: false, error: 'Token not found in hosted list' };
@@ -107,14 +103,12 @@ export async function stopHosted(token) {
     }
 }
 
-/**
- * Restore hosted clients on bot startup
- */
-export async function restoreHosted(ownerId) {
+export async function restoreHosted(fallbackOwnerId) {
     const db = loadDB();
     if (!db.length) return;
     log(`Restoring ${db.length} hosted clients...`, 'info');
     for (const entry of db) {
+        const ownerId = entry.ownerId || fallbackOwnerId;
         const result = await startHosted(entry.token, entry.prefix, ownerId);
         if (result.success) log(`Restored hosted: @${result.username} [${entry.prefix}]`, 'success');
         else log(`Failed to restore hosted token: ${result.error}`, 'error');

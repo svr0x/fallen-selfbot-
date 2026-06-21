@@ -45,7 +45,6 @@ export default {
     }
 
     try {
-      // Get the member object from the guild
       targetMember = await message.guild.members.fetch(targetUser.id);
     } catch (error) {
       return message.channel.send(

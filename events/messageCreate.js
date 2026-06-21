@@ -1,20 +1,3 @@
-/**
- * MESSAGE CREATE EVENT HANDLER
- *
- * This event handler processes all incoming messages and handles various
- * automated features including:
- * - AFK (Away From Keyboard) system management
- * - Stalk logging for monitored users
- * - Clownify reactions for targeted users
- * - Bad reply automation for troll commands
- * - Direct message logging
- *
- * The handler runs for every message sent in servers where the selfbot
- * has access, enabling comprehensive message monitoring and automation.
- *
- * @module events/messageCreate
- * @author svrOx.
- */
 
 import chalk from "chalk";
 import { readAfkData, writeAfkData } from "../utils/afkHandler.js";
@@ -28,19 +11,7 @@ export default {
   name: "messageCreate",
   once: false,
 
-  /**
-   * Handle incoming message events
-   *
-   * @async
-   * @function execute
-   * @param {Client} client - Discord.js client instance
-   * @param {Message} message - The message that was created
-   * @description Processes every new message for AFK management, stalk logging,
-   *              automated reactions, and other selfbot features. Includes
-   *              filtering to prevent bot loops and unwanted triggers.
-   */
-  execute: async (client, message) => {
-    // Skip processing messages from bots to prevent loops
+    execute: async (client, message) => {
     if (message.author.bot) return;
 
     // Auto-react handler
@@ -49,8 +20,6 @@ export default {
     // Load current AFK data from storage
     const afkData = readAfkData();
 
-    // Define message prefixes that should not trigger AFK removal
-    // This prevents the bot's own messages from removing AFK status
     const afkIgnorePrefixes = [
       "> 👋 Welcome back!",
       "> ✅ You are now AFK.",
@@ -58,14 +27,12 @@ export default {
       "> 😴",
     ];
 
-    // Check if message starts with ignored prefixes to prevent AFK removal loops
     if (
       afkIgnorePrefixes.some((prefix) => message.content.startsWith(prefix))
     ) {
       return;
     }
 
-    // Handle AFK status removal when user sends a message
     if (
       afkData[message.author.id] &&
       !afkIgnorePrefixes.some((prefix) => message.content.startsWith(prefix))
@@ -74,7 +41,6 @@ export default {
       delete afkData[message.author.id];
       writeAfkData(afkData);
 
-      // Calculate how long the user was AFK
       const timeAfk = formatTime(Date.now() - afkInfo.timestamp);
       await message.channel.send(
         `> 👋 Welcome back! You were AFK for ${timeAfk}.`
@@ -82,7 +48,6 @@ export default {
       return;
     }
 
-    // Collect mentioned users and replied-to users for AFK checking
     const mentionedUsers = new Set();
 
     // Add mentioned users
@@ -104,7 +69,6 @@ export default {
       }
     }
 
-    // Check AFK status for all mentioned/replied-to users
     for (const user of mentionedUsers) {
       if (afkData[user.id]) {
         const afkInfo = afkData[user.id];
@@ -134,7 +98,6 @@ export default {
           "warn"
         );
 
-        // If we can't react (permissions lost), stop the session
         if (error.status === 403) {
           if (sessionData.task) {
             sessionData.task.stop();
@@ -152,7 +115,6 @@ export default {
     if (badReplySessions.has(sessionKey)) {
       const sessionData = badReplySessions.get(sessionKey);
       try {
-        // Get bad replies from config or defaults
         const badReplies = getBadReplies();
 
         // Get a random bad reply
@@ -173,7 +135,6 @@ export default {
           "warn"
         );
 
-        // If we can't reply (permissions lost), stop the session
         if (error.status === 403) {
           if (sessionData.task) {
             sessionData.task.stop();
@@ -202,7 +163,6 @@ export default {
       });
     }
 
-    // Log direct messages if enabled in config
     if (message.channel.type === "DM") {
       const config = loadConfig();
       if (config.selfbot.dm_logs) {

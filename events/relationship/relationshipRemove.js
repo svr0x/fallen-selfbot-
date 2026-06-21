@@ -5,25 +5,18 @@ export default {
     name: 'relationshipRemove',
     once: false,
     
-    /**
-     * Handle relationship removal events (unfriended, etc.)
-     * @param {Client} client - Discord.js client instance
-     * @param {string|Object} relationship - The relationship object or user ID
-     */
-    execute: async (client, relationship) => {
+        execute: async (client, relationship) => {
         try {
             // Debug the relationship object
             if (client.config.debug_mode && client.config.debug_mode.enabled) {
                 log(`[DEBUG] relationshipRemove data: ${JSON.stringify(relationship)}`, 'debug');
             }
             
-            // In discord.js-selfbot-v13, the relationship parameter can be just a user ID string
             // or an object with relationship details
             let userId;
             let relationshipType = 'FRIEND'; // Default to FRIEND for removal events
             
             if (typeof relationship === 'string') {
-                // If it's just a string, it's the user ID
                 userId = relationship;
             } else {
                 // It's an object with properties
@@ -74,7 +67,6 @@ export default {
                     break;
                     
                 default:
-                    // If type is not available, assume it's a friend removal
                     await logRelationship({
                         event: 'friendRemove',
                         data: { user },

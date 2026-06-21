@@ -20,13 +20,6 @@ if (!fs.existsSync(RELATIONSHIP_DIR)) {
 // Cache for webhook client
 let webhookClient = null;
 
-/**
- * Log relationship events to console, file, and webhook
- * @param {Object} options - Logging options
- * @param {string} options.event - Event type (e.g., 'friendRequest', 'friendAdd')
- * @param {Object} options.data - Event data
- * @param {Client} options.client - Discord.js client
- */
 export async function logRelationship(options) {
     const { event, data, client } = options;
     const config = loadConfig();
@@ -36,7 +29,6 @@ export async function logRelationship(options) {
         return;
     }
     
-    // Format the log message based on event type
     const { consoleMessage, fileMessage, webhookEmbed } = formatRelationshipLog(event, data);
     
     // Log to console
@@ -65,9 +57,7 @@ export async function logRelationship(options) {
             // Skip if webhook URL is empty
             if (!webhookUrl) return;
             
-            // Create webhook client if not already created
             if (!webhookClient) {
-                // Parse webhook URL to get ID and token
                 const match = webhookUrl.match(/discord.com\/api\/webhooks\/([^/]+)\/([^/]+)/);
                 if (!match) {
                     throw new Error('Invalid webhook URL format');
@@ -89,12 +79,6 @@ export async function logRelationship(options) {
     }
 }
 
-/**
- * Format relationship log messages based on event type
- * @param {string} event - Event type
- * @param {Object} data - Event data
- * @returns {Object} Formatted messages for different outputs
- */
 export function formatRelationshipLog(event, data) {
     const timestamp = new Date().toISOString();
     let consoleMessage = '';

@@ -71,7 +71,6 @@ export default {
         const identifier = args.join(' ');
         if (!identifier) return;
 
-        // Check if already in a VC in this guild
         const me = message.guild.members.cache.get(client.user.id);
         if (me?.voice?.channelId) {
             const currentChannel = me.voice.channel;

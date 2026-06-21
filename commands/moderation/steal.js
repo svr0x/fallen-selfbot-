@@ -23,7 +23,6 @@ export default {
 
     const guildId = message.guild.id;
 
-    // Ensure only one task runs per server using TaskManager
     if (TaskManager.hasTask("steal", guildId)) {
       return message.channel.send(
         "> ⚠️ Another emoji stealing task is already running for this server."
@@ -73,7 +72,6 @@ export default {
       if (task.signal) {
         task.signal.addEventListener("abort", () => {
           isCancelled = true;
-          // Only show cancellation message if it wasn't a natural completion
           if (!task.signal.reason || task.signal.reason !== "completed") {
             statusMsg
               .edit(

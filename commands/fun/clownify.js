@@ -1,7 +1,6 @@
 import TaskManager from "../../utils/TaskManager.js";
 import { log } from "../../utils/functions.js";
 
-// Store active clownify sessions - will be accessible from messageCreate event
 export const clownifySessions = new Map();
 
 export default {
@@ -80,7 +79,6 @@ export default {
     const guildId = message.guild?.id || "dm";
     const sessionKey = `${targetUser.id}:${guildId}`;
 
-    // Check if user is already being clownified
     if (clownifySessions.has(sessionKey)) {
       return message.channel.send(
         `🤡 **${targetUser.username} is already being clownified!**`
@@ -107,12 +105,10 @@ export default {
       isCancelled: false,
     };
 
-    // Add cancellation listener to clean up session immediately
     if (task.signal) {
       task.signal.addEventListener("abort", () => {
         sessionData.isCancelled = true;
         clownifySessions.delete(sessionKey);
-        // Only log if it was actually cancelled by user, not by natural completion
         if (!task.signal.reason || task.signal.reason !== "completed") {
           log(`Clownify task for ${targetUser.username} was cancelled`, "warn");
         }

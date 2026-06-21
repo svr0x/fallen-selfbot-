@@ -14,7 +14,6 @@ export default {
     try {
       if (message.author.id !== client.user.id) return;
 
-      // Determine how many links to generate (default: 1)
       let amount = 1;
       if (args[0] && !isNaN(args[0])) {
         amount = parseInt(args[0]);
@@ -24,7 +23,6 @@ export default {
         if (amount > 10) amount = 10;
       }
 
-      // Generate the specified number of fake Nitro links
       const links = [];
       for (let i = 0; i < amount; i++) {
         links.push(generateFakeNitroLink());
@@ -49,10 +47,6 @@ export default {
   },
 };
 
-/**
- * Generate a fake Nitro gift link
- * @returns {string} Fake Nitro gift link
- */
 function generateFakeNitroLink() {
   // Generate a random 16-character code
   const code = Array(16)

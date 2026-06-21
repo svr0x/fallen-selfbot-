@@ -26,14 +26,12 @@ export default {
     const isDM = message.channel.type === "DM";
     const taskName = `purge_${channelId}`;
 
-    // Ensure only one task runs per channel using TaskManager
     if (TaskManager.hasTask(taskName, guildId)) {
       return message.channel.send(
         "> ⚠️ Another purge task is already running for this channel."
       );
     }
 
-    // Create a task for this purge operation
     const task = TaskManager.createTask(taskName, guildId);
     if (!task) {
       return message.channel.send("> ❌ Failed to create purge task.");
@@ -55,7 +53,6 @@ export default {
       if (task.signal) {
         task.signal.addEventListener("abort", () => {
           isCancelled = true;
-          // Only log if task was actually cancelled by user, not by completion
           if (!task.signal.reason || task.signal.reason !== "completed") {
             log(
               `Purge task cancelled after deleting ${deletedCount} messages`,
@@ -66,7 +63,6 @@ export default {
       }
 
       if (isDM) {
-        // In DMs, delete only the bot's own messages
         const messages = await message.channel.messages.fetch({ limit: 100 });
         const botMessages = messages
           .filter((msg) => msg.author.id === client.user.id)
@@ -97,7 +93,6 @@ export default {
           statusMsg
             .edit(`> ✅ Successfully purged ${deletedCount} messages.`)
             .then((msg) => {
-              // Use regular setTimeout to avoid race condition with task destruction
               setTimeout(() => {
                 msg.delete().catch(() => {});
               }, 5000);
@@ -111,7 +106,6 @@ export default {
             .catch(() => {});
         }
       } else {
-        // In servers, delete messages one by one using the rate limiter
         // First fetch the messages
         const messages = await message.channel.messages.fetch({
           limit: amount + 1,
@@ -147,7 +141,6 @@ export default {
           statusMsg
             .edit(`> ✅ Successfully purged ${deletedCount} messages.`)
             .then((msg) => {
-              // Use regular setTimeout to avoid race condition with task destruction
               setTimeout(() => {
                 msg.delete().catch(() => {});
               }, 5000);

@@ -17,11 +17,9 @@ export default {
       // Determine which channel to snipe from
       let targetChannel = message.channel;
 
-      // If a channel is mentioned, use that instead
       if (message.mentions.channels.size > 0) {
         targetChannel = message.mentions.channels.first();
       }
-      // If a channel ID is provided, try to get that channel
       else if (args[0] && !isNaN(args[0])) {
         const channel =
           message.guild?.channels.cache.get(args[0]) ||
@@ -31,7 +29,6 @@ export default {
         }
       }
 
-      // Get the edited message cache from the messageUpdate event
       const editedMessages = client._editedMessages || new Map();
 
       // Debug: Log the current cache state
@@ -41,7 +38,6 @@ export default {
       );
       log(`Looking for messages in channel ID: ${targetChannel.id}`, "debug");
 
-      // Get the edited message for this channel
       const editedMessage = editedMessages.get(targetChannel.id);
 
       // If no message was found
@@ -78,7 +74,6 @@ export default {
         editedMessage.oldContent &&
         editedMessage.oldContent.trim().length > 0
       ) {
-        // If content is short, show it inline
         if (editedMessage.oldContent.length < 100) {
           snipeMessage += `> Before:** ${editedMessage.oldContent}\n`;
         } else {
@@ -94,7 +89,6 @@ export default {
         editedMessage.newContent &&
         editedMessage.newContent.trim().length > 0
       ) {
-        // If content is short, show it inline
         if (editedMessage.newContent.length < 100) {
           snipeMessage += `> After:** ${editedMessage.newContent}\n`;
         } else {

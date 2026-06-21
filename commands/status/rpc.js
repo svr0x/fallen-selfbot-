@@ -577,7 +577,6 @@ export default {
             return message.channel.send("> Usage:** `+rpc addButton <label> <url>`\nExample: `+rpc addButton \"Visit GitHub\" https://github.com/svrOx./fallen`");
         }
 
-        // Smart parsing: find the URL (must start with http:// or https://)
         let urlIndex = -1;
         for (let i = 0; i < args.length; i++) {
             if (args[i].startsWith('http://') || args[i].startsWith('https://')) {
@@ -596,7 +595,6 @@ export default {
 
         // Extract label (everything before the URL)
         const label = args.slice(0, urlIndex).join(' ');
-        // Extract URL (everything from URL index onwards)
         const url = args.slice(urlIndex).join(' ');
 
         if (label.length > 32) {

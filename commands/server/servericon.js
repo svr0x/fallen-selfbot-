@@ -20,7 +20,6 @@ export default {
 
       if (message.author.id !== client.user.id) return;
 
-      // Check if an image URL was provided
       const iconURL = args[0];
       if (!iconURL) {
         return message.channel.send(

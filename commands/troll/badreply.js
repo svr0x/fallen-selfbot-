@@ -5,7 +5,6 @@ import RateLimitManager from '../../utils/RateLimitManager.js';
 
 export const badReplySessions = new Map();
 
-// each entry = one full block, sent as ONE message via .send()
 const CHATPACK = [
 `faggot ass nigga pussy ass nigga ur a fucking retard
 you got cucked by maxine dont cope retarded ass nigga your slow nigga ur slow as fuck nigga
@@ -206,7 +205,6 @@ function getBadReplies() {
     return CHATPACK;
 }
 
-// adds # / ## / ### prefix to a block sometimes, plain text most of the time
 function formatBlock(block) {
     const roll = Math.random();
     if (roll < 0.12) return `# ${block}`;

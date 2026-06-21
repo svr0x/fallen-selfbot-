@@ -13,7 +13,6 @@ export default {
     cooldown: 5,
 
     execute: async (client, message, args) => {
-        // Check if the message is a reply
         if (!message.reference) {
             return message.channel.send('Please reply to a message containing a sticker!');
         }
@@ -22,7 +21,6 @@ export default {
             // Fetch the referenced message
             const refMsg = await message.channel.messages.fetch(message.reference.messageId);
 
-            // Ensure the referenced message contains a sticker
             if (!refMsg.stickers || refMsg.stickers.size === 0) {
                 return message.channel.send('No sticker found in the replied message!');
             }
@@ -32,11 +30,9 @@ export default {
             // Debug log the sticker format
             log(`Sticker format detected: ${sticker.format} (type: ${typeof sticker.format})`, 'debug');
 
-            // Determine the correct URL and file extension based on sticker format
             let stickerUrl;
             let fileExtension;
             
-            // Handle both numeric and string format values
             const formatValue = typeof sticker.format === 'string' ? sticker.format.toUpperCase() : sticker.format;
             
             switch (formatValue) {
@@ -83,7 +79,6 @@ export default {
             // Convert response data to buffer
             const buffer = Buffer.from(response.data);
 
-            // Validate buffer size (Discord limit is ~500KB for most stickers)
             if (buffer.length > 512000) {
                 return message.channel.send('Sticker file is too large! (Max 500KB)');
             }
@@ -94,7 +89,6 @@ export default {
 
             log(`Downloaded sticker data: ${buffer.length} bytes`, 'debug');
             
-            // Debug: Check the first few bytes to verify file type
             const firstBytes = buffer.slice(0, 8);
             log(`First 8 bytes: ${Array.from(firstBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}`, 'debug');
 
@@ -105,14 +99,11 @@ export default {
 
             log(`File type validation - PNG: ${isPNG}, GIF: ${isGIF}, JSON: ${isJSON}`, 'debug');
 
-            // For PNG files, extract dimensions (Discord has specific size requirements)
             if (isPNG) {
-                // PNG dimensions are stored at bytes 16-23 (width at 16-19, height at 20-23)
                 const width = buffer.readUInt32BE(16);
                 const height = buffer.readUInt32BE(20);
                 log(`PNG dimensions: ${width}x${height}`, 'debug');
                 
-                // Discord sticker requirements: 320x320 pixels for static stickers
                 if (width > 320 || height > 320) {
                     return message.channel.send(`Sticker dimensions too large! (${width}x${height} - Max: 320x320)`);
                 }
@@ -121,11 +112,8 @@ export default {
                 }
             }
 
-            // Create the sticker with proper parameters for discord.js-selfbot-v13
-            // Try different approaches based on the error
             log(`Attempting to create sticker with buffer length: ${buffer.length}`, 'debug');
             
-            // Try approach 1: Direct buffer (as per MessagePayload.resolveFile line 307)
             try {
                 const newSticker = await message.guild.stickers.create(
                     buffer,
@@ -142,7 +130,6 @@ export default {
             } catch (directBufferError) {
                 // log(`Direct buffer approach failed: ${directBufferError.message}`, 'error');
                 
-                // Try approach 2: File object with attachment property
                 const fileObject = {
                     attachment: buffer,
                     name: `${sticker.name.substring(0, 30)}.${fileExtension}`
@@ -166,7 +153,6 @@ export default {
                 } catch (fileObjectError) {
                     // log(`File object approach failed: ${fileObjectError.message}`, 'error');
                     
-                    // Try approach 3: Manual FormData approach using Discord API directly
                     log(`Trying direct API approach with FormData`, 'debug');
                     
                     const form = new FormData();

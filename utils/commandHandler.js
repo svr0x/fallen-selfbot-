@@ -1,13 +1,6 @@
 import { log, hasPermissions } from './functions.js';
 import chalk from 'chalk';
 
-/**
- * Check if a command can be executed in the current context
- * @param {Object} command - The command object
- * @param {Message} message - The message object
- * @param {Client} client - The Discord.js client
- * @returns {Object} - Object with canExecute and reason properties
- */
 export function canExecuteCommand(command, message, client) {
     // Default result
     const result = {
@@ -32,7 +25,6 @@ export function canExecuteCommand(command, message, client) {
         }
     }
     
-    // Check permissions if in a server and permissions are required
     if (message.guild && command.permissions && command.permissions.length > 0) {
         const missingPermissions = [];
 
@@ -53,16 +45,8 @@ export function canExecuteCommand(command, message, client) {
     return result;
 }
 
-/**
- * Execute a command with all necessary checks
- * @param {Object} command - The command object
- * @param {Client} client - The Discord.js client
- * @param {Message} message - The message object
- * @param {Array} args - Command arguments
- */
 export async function executeCommand(command, client, message, args) {
     try {
-        // Check if the command can be executed
         const { canExecute, reason } = canExecuteCommand(command, message, client);
         
         if (!canExecute) {

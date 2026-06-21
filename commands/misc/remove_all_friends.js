@@ -34,7 +34,6 @@ export default {
       try {
         const rateLimiter = new RateLimitManager(1); // Conservative rate limiting
 
-        // Get friends list - with error handling and fallbacks
         let friends = [];
         let friendCount = 0;
 
@@ -62,7 +61,6 @@ export default {
             );
           }
 
-          // Method 2: If Discord.js method fails or returns empty, try using relationships
           if (friends.length === 0 && client.relationships) {
             const relationships =
               client.relationships.friendCache || client.relationships.cache;
@@ -78,7 +76,6 @@ export default {
             }
           }
 
-          // Method 3: Last resort - try direct API call
           if (friends.length === 0) {
             log("Attempting to fetch friends via direct API call", "debug");
             const response = await axios.get(
@@ -92,7 +89,6 @@ export default {
             );
 
             if (response.data && Array.isArray(response.data)) {
-              // Filter to only include friends (type 1)
               const friendRelationships = response.data.filter(
                 (rel) => rel.type === 1
               );
@@ -150,7 +146,6 @@ export default {
 
               // Method 1: Try using Discord.js
               try {
-                // Handle both direct User objects and API relationship objects
                 const userId =
                   friend?.id || friend?.user_id || friend?.user?.id;
                 if (!userId) {
@@ -162,7 +157,6 @@ export default {
                   return;
                 }
 
-                // Try to get the user and remove friendship
                 if (
                   friend &&
                   friend.remove &&
@@ -190,10 +184,8 @@ export default {
                 );
               }
 
-              // Method 2: If Discord.js fails, try direct API call
               if (!removeSuccess) {
                 try {
-                  // Reuse the userId we already validated above, or get it again if needed
                   const userId =
                     friend?.id || friend?.user_id || friend?.user?.id;
                   if (!userId) {
@@ -241,7 +233,6 @@ export default {
                   .catch(() => {});
               }
 
-              // Add a delay between removals to avoid rate limits
               await wait(2000); // 2 second delay
             }, task.signal);
           } catch (error) {

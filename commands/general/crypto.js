@@ -40,7 +40,6 @@ export default {
       if (response.status === 200) {
         const data = response.data;
 
-        // Format the price change with appropriate emoji
         const priceChange = data.market_data.price_change_percentage_24h;
         const changeEmoji = priceChange >= 0 ? "📈" : "📉";
         const changeColor = priceChange >= 0 ? "+" : "";

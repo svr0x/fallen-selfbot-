@@ -46,7 +46,6 @@ export default {
         // Add cancellation listener
         if (task.signal) {
           task.signal.addEventListener("abort", () => {
-            // Only show cancellation message if it wasn't a natural completion
             if (!task.signal.reason || task.signal.reason !== "completed") {
               isCancelled = true;
               statusMsg

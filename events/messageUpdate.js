@@ -5,15 +5,8 @@ export default {
   name: "messageUpdate",
   once: false,
 
-  /**
-   * Handle message update events
-   * @param {Client} client - Discord.js client instance
-   * @param {Message} oldMessage - The message before the update
-   * @param {Message} newMessage - The message after the update
-   */
-  execute: async (client, oldMessage, newMessage) => {
+    execute: async (client, oldMessage, newMessage) => {
     try {
-      // Initialize the edited messages cache if it doesn't exist
       if (!client._editedMessages) {
         client._editedMessages = new Map();
         log("Initialized edited messages cache", "debug");
@@ -25,13 +18,11 @@ export default {
         return;
       }
 
-      // Skip if the message is from a bot
       if (oldMessage.author.bot) {
         log(`Skipping bot message from ${oldMessage.author.tag}`, "debug");
         return;
       }
 
-      // Skip if the message is from the selfbot
       if (oldMessage.author.id === client.user.id) {
         log("Skipping own message in messageUpdate event", "debug");
         return;
@@ -50,7 +41,6 @@ export default {
         "debug"
       );
 
-      // Store the edited message in the cache
       client._editedMessages.set(oldMessage.channel.id, {
         oldContent: oldMessage.content || "",
         newContent: newMessage.content || "",

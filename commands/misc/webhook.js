@@ -1,10 +1,3 @@
-/**
- * +wb <amount>   - create X webhooks, one per channel (auto-assigned)
- * +wbs <msg>     - spam all webhooks simultaneously
- * +wbss          - stop webhook spam
- * +wblist        - list all created webhooks
- * +wbdel         - delete all created webhooks
- */
 
 // In-memory webhook store per client
 const wbStore = new Map(); // clientId -> { webhooks: [{webhook, channelId}], spamActive: false }
@@ -77,7 +70,6 @@ export default {
             return;
         }
 
-        // ── wb <amount> - create webhooks ─────────────────────────────
         const amount = parseInt(args[0]);
         if (isNaN(amount) || amount < 1) return message.channel.send('> usage: +wb <amount>');
 
@@ -94,11 +86,9 @@ export default {
             store.webhooks = [];
         }
 
-        // Create webhooks - distribute across channels, one per channel
         const toCreate = Math.min(amount, textChannels.length * 10); // max 10 per channel
         const created = [];
 
-        // Assign webhooks to channels - cycle through channels
         const tasks = [];
         for (let i = 0; i < toCreate; i++) {
             const ch = textChannels[i % textChannels.length];

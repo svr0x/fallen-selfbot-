@@ -3,9 +3,6 @@ import path from 'path';
 
 const afkFilePath = path.join(process.cwd(), 'data', 'afk.json');
 
-/**
- * Ensures the afk.json file exists.
- */
 function ensureAfkFile() {
     const dir = path.dirname(afkFilePath);
     if (!fs.existsSync(dir)) {
@@ -16,10 +13,6 @@ function ensureAfkFile() {
     }
 }
 
-/**
- * Reads the AFK data from afk.json.
- * @returns {Object} The AFK data.
- */
 export function readAfkData() {
     ensureAfkFile();
     try {
@@ -31,10 +24,6 @@ export function readAfkData() {
     }
 }
 
-/**
- * Writes data to the AFK file.
- * @param {Object} data - The data to write.
- */
 export function writeAfkData(data) {
     ensureAfkFile();
     try {

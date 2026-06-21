@@ -20,7 +20,6 @@ export default {
 
       if (message.author.id !== client.user.id) return;
 
-      // Check if a new name was provided
       const newName = args.join(" ");
       if (!newName) {
         return message.channel.send("> ❌ Please provide a new server name.");

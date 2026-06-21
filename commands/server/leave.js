@@ -27,7 +27,6 @@ export default {
         // Send confirmation message before leaving
         await message.channel.send(`> 👋 Leaving server: **${guildName}**...`);
 
-        // Small delay to ensure the message is sent before leaving
         await new Promise((resolve) => setTimeout(resolve, 500));
 
         // Leave the server
@@ -36,20 +35,17 @@ export default {
         // Log the action
         log(`Successfully left guild ${guildName} (${guildId})`, "debug");
 
-        // No need for a follow-up message since we've already left the server
       } catch (error) {
         log(
           `Failed to leave guild ${guildName} (${guildId}): ${error.message}`,
           "error"
         );
 
-        // Try to send an error message if possible
         try {
           message.channel.send(
             "> ❌ Failed to leave the server. Check console for details."
           );
         } catch {
-          // If we can't send a message, just log it
           log("Could not send error message to channel", "warn");
         }
       }

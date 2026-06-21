@@ -141,12 +141,8 @@ export default {
     }
   },
 
-  /**
-   * Parse emoji input and get emoji information
-   */
-  async parseEmoji(input, message) {
+    async parseEmoji(input, message) {
     try {
-      // Check if it's a custom Discord emoji
       const customEmojiMatch = input.match(/<a?:(\w+):(\d+)>/);
       if (customEmojiMatch) {
         const [, name, id] = customEmojiMatch;
@@ -176,10 +172,8 @@ export default {
         };
       }
 
-      // Check if it's an emoji name (like :smile:)
       const emojiNameMatch = input.match(/^:(\w+):$/);
       if (emojiNameMatch) {
-        // Try to find it in the guild's emojis
         if (message.guild) {
           const guildEmoji = message.guild.emojis.cache.find(
             (e) => e.name === emojiNameMatch[1]
@@ -202,20 +196,14 @@ export default {
     }
   },
 
-  /**
-   * Check if input is a Unicode emoji
-   */
-  isUnicodeEmoji(input) {
+    isUnicodeEmoji(input) {
     // Basic Unicode emoji detection
     const emojiRegex =
       /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u;
     return emojiRegex.test(input);
   },
 
-  /**
-   * Download emoji image from URL
-   */
-  async downloadEmojiImage(emojiInfo) {
+    async downloadEmojiImage(emojiInfo) {
     try {
       const response = await axios.get(emojiInfo.url, {
         responseType: "arraybuffer",

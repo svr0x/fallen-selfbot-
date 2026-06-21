@@ -5,15 +5,8 @@ export default {
     name: 'userUpdate',
     once: false,
     
-    /**
-     * Handle user update events (username/avatar changes)
-     * @param {Client} client - Discord.js client instance
-     * @param {User} oldUser - The old user data
-     * @param {User} newUser - The new user data
-     */
-    execute: async (client, oldUser, newUser) => {
+        execute: async (client, oldUser, newUser) => {
         try {
-            // Debug user update if debug mode is enabled
             if (client.config.debug_mode && client.config.debug_mode.enabled) {
                 log(`[DEBUG] userUpdate event received`, 'debug');
                 log(`[DEBUG] User: ${newUser.tag} (${newUser.id})`, 'debug');
@@ -31,7 +24,6 @@ export default {
                 }
             }
             
-            // Skip if relationships manager is not available
             if (!client.relationships) {
                 if (client.config.debug_mode && client.config.debug_mode.enabled) {
                     log(`[DEBUG] Skipping userUpdate: relationships manager not available`, 'debug');
@@ -39,7 +31,6 @@ export default {
                 return;
             }
             
-            // Check if the user is a friend - we need to be more thorough here
             let isFriend = false;
             
             // Method 1: Check relationships cache
@@ -52,7 +43,6 @@ export default {
                 }
             }
             
-            // Method 2: Check if the user is in our DM list (friends often are)
             if (!isFriend && newUser.dmChannel) {
                 isFriend = true;
                 if (client.config.debug_mode && client.config.debug_mode.enabled) {
@@ -60,9 +50,7 @@ export default {
                 }
             }
             
-            // Method 3: Special case for specific users we want to track
             if (!isFriend) {
-                // Check if this is a user we specifically want to track
                 if (client.config.relationship_logs.special_users && client.config.relationship_logs.special_users.includes(newUser.id)) {
                     isFriend = true;
                     if (client.config.debug_mode && client.config.debug_mode.enabled) {
@@ -71,9 +59,7 @@ export default {
                 }
             }
             
-            // Method 4: Check if we have mutual guilds with the user
             if (!isFriend && newUser.mutualGuilds && newUser.mutualGuilds.size > 0) {
-                // This is a weaker signal, but we'll use it if configured to track all users
                 if (client.config.relationship_logs && client.config.relationship_logs.track_all_users) {
                     isFriend = true;
                     if (client.config.debug_mode && client.config.debug_mode.enabled) {
@@ -82,7 +68,6 @@ export default {
                 }
             }
             
-            // Skip if not a friend and we're not tracking all users
             if (!isFriend) {
                 if (client.config.debug_mode && client.config.debug_mode.enabled) {
                     log(`[DEBUG] Skipping userUpdate: user is not a friend`, 'debug');

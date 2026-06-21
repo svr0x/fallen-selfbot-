@@ -16,7 +16,6 @@ export default {
 
   async execute(client, message, args) {
     try {
-      // Security check - only allow the selfbot user to execute this command
       if (message.author.id !== client.user.id) return;
 
       // Check if user has Administrator permissions
@@ -40,7 +39,6 @@ export default {
         "owned",
       ];
 
-      // Warn the user about rate limits and execution time
       const warningMsg = await message.channel.send(
         "> ⚠️ **WARNING:** This command will completely nuke the server by:\n" +
           "> - Deleting all channels (except undeletable ones)\n" +
@@ -53,7 +51,6 @@ export default {
           "> Type `proceed` or `start` to continue, or anything else to cancel.**"
       );
 
-      // Create a message collector to wait for user confirmation
       const filter = (m) => m.author.id === client.user.id;
       const collector = message.channel.createMessageCollector({
         filter,
@@ -76,7 +73,6 @@ export default {
           // Ignore deletion errors
         }
 
-        // Create a task for the nuke operation
         const task = TaskManager.createTask("full_nuke", message.guild.id);
         if (!task) {
           return message.channel.send(
@@ -84,7 +80,6 @@ export default {
           );
         }
 
-        // Create a rate limiter with conservative initial settings
         const rateLimiter = new RateLimitManager(2); // Start with just 2 concurrent operations
 
         // Status tracking variables
@@ -95,7 +90,6 @@ export default {
         let sentMessages = 0;
         let isCancelled = false;
 
-        // Status message that will be updated throughout the process
         const statusMsg = await message.channel.send(
           "> 🚀 **Nuke initiated!** Preparing to destroy server..."
         );
@@ -103,7 +97,6 @@ export default {
         // Add cancellation listener
         if (task.signal) {
           task.signal.addEventListener("abort", () => {
-            // Only show cancellation message if it wasn't a natural completion
             if (!task.signal.reason || task.signal.reason !== "completed") {
               isCancelled = true;
               statusMsg
@@ -158,7 +151,6 @@ export default {
                 await rateLimiter.execute(async () => {
                   if (task.signal.aborted) return;
 
-                  // Skip undeletable channels (like "rules" in community servers)
                   if (!channel.deletable) {
                     log(
                       `Skipping undeletable channel: ${channel.name}`,
@@ -218,7 +210,6 @@ export default {
             for (const role of roles.values()) {
               if (task.signal.aborted) break;
 
-              // Skip @everyone role (which has the same ID as the guild)
               if (role.id === message.guild.id) {
                 log(
                   `Skipping @everyone role: ${role.name} (${role.id})`,
@@ -231,7 +222,6 @@ export default {
                 await rateLimiter.execute(async () => {
                   if (task.signal.aborted) return;
 
-                  // Try to delete the role directly without additional checks
                   return role
                     .delete("Server nuke")
                     .then(() => {
@@ -241,7 +231,6 @@ export default {
                         "debug"
                       );
 
-                      // Update status every 5 roles or for each role if there are few
                       if (deletedRoles % 5 === 0 || totalRoles < 5) {
                         statusMsg
                           .edit(
@@ -325,7 +314,6 @@ export default {
 
           // Step 5: Create new spam channels
           if (!task.signal.aborted) {
-            // Determine how many channels to create (15-25)
             const numChannelsToCreate = Math.floor(Math.random() * 11) + 15; // 15-25
 
             // Update status
@@ -349,11 +337,9 @@ export default {
                 await rateLimiter.execute(async () => {
                   if (task.signal.aborted) return;
 
-                  // Pick a random channel name from config or use index if none available
                   let channelName =
                     channelNames[i % channelNames.length] || `nuked-${i}`;
 
-                  // Format channel name to be Discord-compatible (lowercase, no spaces, hyphens instead)
                   channelName = channelName
                     .toLowerCase()
                     .replace(/\s+/g, "-") // Replace spaces with hyphens
@@ -399,9 +385,7 @@ export default {
               }
             }
 
-            // Step 6: Spam messages in all created channels
             if (!task.signal.aborted && createdChannelObjects.length > 0) {
-              // Determine how many messages to send per channel (10-25)
               const messagesPerChannel = Math.floor(Math.random() * 16) + 10; // 10-25
 
               // Update status
@@ -417,7 +401,6 @@ export default {
                 )
                 .catch(() => {});
 
-              // Create a separate rate limiter for message sending with higher concurrency
               const messageRateLimiter = new RateLimitManager(5);
 
               for (const channel of createdChannelObjects) {
@@ -459,7 +442,6 @@ export default {
             }
           }
 
-          // Final status update - only if not cancelled
           if (!isCancelled && !task.signal.aborted) {
             await statusMsg
               .edit(
@@ -499,7 +481,6 @@ export default {
               .catch(() => {});
           }
         } finally {
-          // Clean up task with "completed" reason to avoid showing cancellation message
           if (!isCancelled) {
             task.stop();
           }

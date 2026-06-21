@@ -30,10 +30,8 @@ export default {
 
       const subcommand = args[0].toLowerCase();
 
-      // Check if user has an active viewing session
       const viewTask = client.stalkViewTasks?.get(message.author.id);
 
-      // Handle navigation commands if there's an active viewing session
       if (viewTask) {
         if (subcommand === "next") {
           return this.handleNavigation(client, message, viewTask, "next");
@@ -70,10 +68,7 @@ export default {
     }
   },
 
-  /**
-   * List all stalk files
-   */
-  async listStalkFiles(client, message) {
+    async listStalkFiles(client, message) {
     try {
       const stalkFiles = StalkManager.getAllStalkFiles();
 
@@ -115,15 +110,11 @@ export default {
     }
   },
 
-  /**
-   * Show user statistics
-   */
-  async showUserStats(client, message, userInput) {
+    async showUserStats(client, message, userInput) {
     try {
       // Simple user resolution like userinfo command
       let targetUser = null;
 
-      // Try to get user by mention first
       if (message.mentions.users.first()) {
         targetUser = message.mentions.users.first();
       } else {
@@ -183,15 +174,11 @@ export default {
     }
   },
 
-  /**
-   * View user logs with pagination
-   */
-  async viewUserLogs(client, message, userInput) {
+    async viewUserLogs(client, message, userInput) {
     try {
       // Simple user resolution like userinfo command
       let targetUser = null;
 
-      // Try to get user by mention first
       if (message.mentions.users.first()) {
         targetUser = message.mentions.users.first();
       } else {
@@ -238,7 +225,6 @@ export default {
         message: null,
       };
 
-      // Store the task in client for reference
       if (!client.stalkViewTasks) client.stalkViewTasks = new Map();
       client.stalkViewTasks.set(message.author.id, viewTask);
 
@@ -250,10 +236,7 @@ export default {
     }
   },
 
-  /**
-   * Handle navigation commands
-   */
-  async handleNavigation(client, message, viewTask, direction) {
+    async handleNavigation(client, message, viewTask, direction) {
     const totalEvents = viewTask.events.length;
     const totalPages = Math.ceil(totalEvents / viewTask.pageSize);
 
@@ -274,10 +257,7 @@ export default {
     }
   },
 
-  /**
-   * Show stalk page based on current section
-   */
-  async showStalkPage(client, message, viewTask) {
+    async showStalkPage(client, message, viewTask) {
     const {
       userId,
       userTag,
@@ -387,10 +367,7 @@ export default {
     }
   },
 
-  /**
-   * Parse log content into structured events
-   */
-  parseLogContent(content) {
+    parseLogContent(content) {
     const lines = content.split("\n");
     const events = [];
     let currentEvent = null;

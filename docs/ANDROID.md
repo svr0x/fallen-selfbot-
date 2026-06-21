@@ -496,7 +496,7 @@ export DISCORD_TOKEN="your_token_here"
 
 ### **Need Help?**
 
-- **Discord Server**: https://discord.gg/b3hZG4R7Mf
+- **Discord Server**: https://discord.gg/ypXHdGQaq
 - **GitHub Issues**: https://github.com/svrOx./fallen/issues
 - **Developers**: `svrOx.` or `marcel4real`
 

@@ -92,7 +92,6 @@ export default {
     }
 
     try {
-      // Test the first status to ensure API works
       await this.setCustomStatus(client, validatedStatuses[0]);
 
       // Store session data
@@ -107,7 +106,6 @@ export default {
         isCancelled: false,
       };
 
-      // Add cancellation listener to clean up session immediately
       if (task.signal) {
         task.signal.addEventListener("abort", () => {
           sessionData.isCancelled = true;
@@ -115,7 +113,6 @@ export default {
             clearTimeout(sessionData.intervalId);
           }
           statusRotationSessions.delete(userId);
-          // Only log if it was actually cancelled by user, not by natural completion
           if (!task.signal.reason || task.signal.reason !== "completed") {
             log(
               `Status rotation task for ${message.author.tag} was cancelled`,
@@ -210,12 +207,7 @@ export default {
     await message.channel.send(listText);
   },
 
-  /**
-   * Start the rotation interval for a session
-   * @param {Client} client - Discord client
-   * @param {Object} sessionData - Session data object
-   */
-  startRotationInterval(client, sessionData) {
+    startRotationInterval(client, sessionData) {
     const rotateStatus = async () => {
       try {
         // Check if task was cancelled
@@ -234,7 +226,6 @@ export default {
         // Check again before scheduling next rotation
         if (sessionData.task.signal.aborted || sessionData.isCancelled) return;
 
-        // Schedule next rotation with random interval (60-180 seconds)
         const nextInterval =
           Math.floor(Math.random() * (180000 - 60000 + 1)) + 60000;
 
@@ -273,7 +264,6 @@ export default {
       Math.floor(Math.random() * (180000 - 60000 + 1)) + 60000;
     sessionData.intervalId = setTimeout(rotateStatus, initialInterval);
 
-    // Add cancellation listener to the initial timeout
     if (sessionData.task.signal) {
       sessionData.task.signal.addEventListener("abort", () => {
         if (sessionData.intervalId) {
@@ -283,13 +273,7 @@ export default {
     }
   },
 
-  /**
-   * Parse status text and extract emoji/text
-   * @param {string} statusText - Raw status text
-   * @returns {Object} Parsed status object
-   */
-  parseStatus(statusText) {
-    // Check for custom emoji pattern <:name:id> or <a:name:id>
+    parseStatus(statusText) {
     const customEmojiMatch = statusText.match(/^<a?:(\w+):(\d+)>\s*(.*)/);
     if (customEmojiMatch) {
       const [, name, id, text] = customEmojiMatch;
@@ -306,7 +290,6 @@ export default {
       };
     }
 
-    // Check for unicode emoji at the start
     const unicodeEmojiMatch = statusText.match(
       /^([\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}])\s*(.*)/u
     );
@@ -329,12 +312,7 @@ export default {
     };
   },
 
-  /**
-   * Set custom status using Discord API
-   * @param {Client} client - Discord client
-   * @param {Object} statusData - Parsed status data
-   */
-  async setCustomStatus(client, statusData) {
+    async setCustomStatus(client, statusData) {
     try {
       const config = loadConfig();
       const apiVersion = config.api?.version || "v10";
@@ -375,12 +353,7 @@ export default {
     }
   },
 
-  /**
-   * Format duration in milliseconds to readable string
-   * @param {number} ms - Duration in milliseconds
-   * @returns {string} Formatted duration
-   */
-  formatDuration(ms) {
+    formatDuration(ms) {
     const seconds = Math.floor(ms / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);

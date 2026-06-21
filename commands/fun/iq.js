@@ -9,7 +9,6 @@ export default {
   async execute(client, message, args) {
     let user = message.author;
 
-    // Check if user mentioned someone or provided user ID
     if (message.mentions.users.size > 0) {
       user = message.mentions.users.first();
     } else if (args[0]) {
@@ -20,7 +19,6 @@ export default {
           if (fetchedUser) user = fetchedUser;
         }
       } catch (error) {
-        // If user not found, use message author
       }
     }
 

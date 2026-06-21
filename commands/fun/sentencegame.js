@@ -27,7 +27,6 @@ export default {
 
       await message.channel.send(`**Current story:** ${sentence}\nAdd to it!`);
 
-      // Continue the story for up to 5 more additions
       for (let i = 0; i < 5; i++) {
         try {
           const nextCollected = await message.channel.awaitMessages({

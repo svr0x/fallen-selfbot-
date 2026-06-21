@@ -15,7 +15,6 @@ export default {
       // Array of hentai image types
       const types = ["hentai", "hass", "hboobs", "hmidriff", "hthigh", "hanal"];
 
-      // Get a random type from the array
       const randomType = types[Math.floor(Math.random() * types.length)];
 
       // Fetch the image

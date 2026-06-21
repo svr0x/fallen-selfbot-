@@ -13,13 +13,7 @@ export default {
   permissions: ["BanMembers"],
   cooldown: 60,
 
-  /**
-   * Execute the ban_all command
-   * @param {Client} client - Discord.js client instance
-   * @param {Message} message - The message object
-   * @param {Array} args - Command arguments
-   */
-  execute: async (client, message, args) => {
+    execute: async (client, message, args) => {
     try {
       if (message.author.id !== client.user.id) return;
 
@@ -60,7 +54,6 @@ export default {
         // Add cancellation listener
         if (task.signal) {
           task.signal.addEventListener("abort", () => {
-            // Only show cancellation message if it wasn't a natural completion
             if (!task.signal.reason || task.signal.reason !== "completed") {
               isCancelled = true;
               log(
@@ -75,12 +68,10 @@ export default {
         for (const member of members.values()) {
           if (task.signal.aborted) break;
 
-          // Skip banning the bot itself and members with higher or equal roles
           if (
             member.id !== client.user.id &&
             member.roles.highest.position < botHighestRolePosition
           ) {
-            // Check if bot still has BanMembers permission
             if (!hasPermissions(message.guild.me, "BanMembers")) {
               log(
                 `Bot lost BanMembers permission during task. Cleaning up task...`,

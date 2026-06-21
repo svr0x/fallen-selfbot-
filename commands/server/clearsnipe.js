@@ -18,7 +18,6 @@ export default {
       if (!client._deletedMessages) client._deletedMessages = new Map();
       if (!client._editedMessages) client._editedMessages = new Map();
 
-      // Check if a specific channel is mentioned
       if (message.mentions.channels.size > 0) {
         const targetChannel = message.mentions.channels.first();
 
@@ -36,7 +35,6 @@ export default {
           "debug"
         );
       }
-      // Check if a channel ID is provided
       else if (args[0] && !isNaN(args[0])) {
         const channelId = args[0];
         const channel =
@@ -61,7 +59,6 @@ export default {
           );
         }
       }
-      // If no channel is specified, clear all caches
       else {
         // Clear all cached messages
         client._deletedMessages.clear();

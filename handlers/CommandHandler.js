@@ -1,8 +1,3 @@
-/**
- * COMMAND HANDLER
- *
- * This module handles the loading, registration, and execution of all bot commands.
- */
 
 import fs from "fs";
 import path from "path";
@@ -10,13 +5,9 @@ import { fileURLToPath } from "url";
 import chalk from "chalk";
 import { log, parseArgs, formatTime, loadAllowedUsers } from "../utils/functions.js";
 
-// Get current file path for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/**
- * Load and register all commands from the commands directory
- */
 export async function loadCommands(client) {
   try {
     if (!client.commands) client.commands = new Map();
@@ -56,7 +47,6 @@ export async function loadCommands(client) {
 
       const hasPrefix = message.content.startsWith(client.prefix);
       if (!client.noprefix && !hasPrefix) return;
-
 
       const allowedUsers = client._allowedUsers || loadAllowedUsers();
       if (message.author.id !== client.user.id && !allowedUsers.includes(message.author.id)) return;
@@ -100,7 +90,6 @@ export async function loadCommands(client) {
         // Delete the command message
         await message.delete().catch(() => {});
 
-        // Execute command and auto-delete reply after 30s
         const reply = await command.execute(client, message, args);
         if (reply && reply.delete) {
           setTimeout(() => reply.delete().catch(() => {}), 30000);

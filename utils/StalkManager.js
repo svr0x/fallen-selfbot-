@@ -14,20 +14,14 @@ class StalkManager {
     this.loadStalkedUsers();
   }
 
-  /**
-   * Initialize the stalk directory
-   */
-  initializeStalkDirectory() {
+    initializeStalkDirectory() {
     if (!fs.existsSync(this.stalkDir)) {
       fs.mkdirSync(this.stalkDir, { recursive: true });
       log("Created stalk directory", "debug");
     }
   }
 
-  /**
-   * Load previously stalked users from files
-   */
-  loadStalkedUsers() {
+    loadStalkedUsers() {
     try {
       if (!fs.existsSync(this.stalkDir)) return;
 
@@ -39,7 +33,6 @@ class StalkManager {
         const userId = file.replace(".txt", "");
         const filePath = path.join(this.stalkDir, file);
 
-        // Read the first line to get user info
         const content = fs.readFileSync(filePath, "utf8");
         const lines = content.split("\n");
         const firstLine = lines.find((line) =>
@@ -74,13 +67,7 @@ class StalkManager {
     }
   }
 
-  /**
-   * Start stalking a user
-   * @param {string} userId - User ID to stalk
-   * @param {Object} userInfo - User information
-   * @returns {boolean} - Success status
-   */
-  startStalking(userId, userInfo) {
+    startStalking(userId, userInfo) {
     try {
       if (!userId || !userInfo) {
         log("Invalid parameters for startStalking", "error");
@@ -95,7 +82,6 @@ class StalkManager {
       const logFile = path.join(this.stalkDir, `${userId}.txt`);
       const startTime = new Date();
 
-      // Create initial log entry with more details
       const initialLog = [
         "=".repeat(80),
         `STALK SESSION STARTED`,
@@ -130,12 +116,7 @@ class StalkManager {
     }
   }
 
-  /**
-   * Stop stalking a user
-   * @param {string} userId - User ID to stop stalking
-   * @returns {boolean} - Success status
-   */
-  stopStalking(userId) {
+    stopStalking(userId) {
     try {
       if (!this.stalkedUsers.has(userId)) {
         return false; // Not stalking
@@ -169,13 +150,7 @@ class StalkManager {
     }
   }
 
-  /**
-   * Log a message event
-   * @param {string} userId - User ID
-   * @param {string} eventType - Type of event (MESSAGE_SENT, MESSAGE_EDITED, MESSAGE_DELETED)
-   * @param {Object} data - Event data
-   */
-  logMessageEvent(userId, eventType, data) {
+    logMessageEvent(userId, eventType, data) {
     if (!this.stalkedUsers.has(userId)) return;
 
     try {
@@ -213,13 +188,7 @@ class StalkManager {
     }
   }
 
-  /**
-   * Log a voice event
-   * @param {string} userId - User ID
-   * @param {string} eventType - Type of event (VOICE_JOIN, VOICE_LEAVE, VOICE_MOVE)
-   * @param {Object} data - Event data
-   */
-  logVoiceEvent(userId, eventType, data) {
+    logVoiceEvent(userId, eventType, data) {
     if (!this.stalkedUsers.has(userId)) return;
 
     try {
@@ -246,13 +215,7 @@ class StalkManager {
     }
   }
 
-  /**
-   * Log a presence event
-   * @param {string} userId - User ID
-   * @param {string} eventType - Type of event (PRESENCE_UPDATE)
-   * @param {Object} data - Event data
-   */
-  logPresenceEvent(userId, eventType, data) {
+    logPresenceEvent(userId, eventType, data) {
     if (!this.stalkedUsers.has(userId)) return;
 
     try {
@@ -290,37 +253,19 @@ class StalkManager {
     }
   }
 
-  /**
-   * Get all stalked users
-   * @returns {Map} - Map of stalked users
-   */
-  getStalkedUsers() {
+    getStalkedUsers() {
     return this.stalkedUsers;
   }
 
-  /**
-   * Check if a user is being stalked
-   * @param {string} userId - User ID
-   * @returns {boolean} - Whether user is being stalked
-   */
-  isStalking(userId) {
+    isStalking(userId) {
     return this.stalkedUsers.has(userId);
   }
 
-  /**
-   * Get stalk info for a user
-   * @param {string} userId - User ID
-   * @returns {Object|null} - Stalk info or null
-   */
-  getStalkInfo(userId) {
+    getStalkInfo(userId) {
     return this.stalkedUsers.get(userId) || null;
   }
 
-  /**
-   * Get all stalk files
-   * @returns {Array} - Array of stalk file info
-   */
-  getAllStalkFiles() {
+    getAllStalkFiles() {
     try {
       const files = fs
         .readdirSync(this.stalkDir)
@@ -377,13 +322,7 @@ class StalkManager {
     }
   }
 
-  /**
-   * Read stalk log content
-   * @param {string} userId - User ID
-   * @param {number} lines - Number of lines to read (0 for all)
-   * @returns {string|null} - Log content or null
-   */
-  readStalkLog(userId, lines = 0) {
+    readStalkLog(userId, lines = 0) {
     try {
       const filePath = path.join(this.stalkDir, `${userId}.txt`);
 
@@ -406,12 +345,7 @@ class StalkManager {
     }
   }
 
-  /**
-   * Format duration in human readable format
-   * @param {number} ms - Duration in milliseconds
-   * @returns {string} - Formatted duration
-   */
-  formatDuration(ms) {
+    formatDuration(ms) {
     const seconds = Math.floor(ms / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
@@ -428,12 +362,7 @@ class StalkManager {
     }
   }
 
-  /**
-   * Get statistics for a stalk session
-   * @param {string} userId - User ID
-   * @returns {Object} - Statistics object
-   */
-  getStalkStats(userId) {
+    getStalkStats(userId) {
     try {
       const content = this.readStalkLog(userId);
       if (!content) return null;
@@ -473,20 +402,11 @@ class StalkManager {
     }
   }
 
-  /**
-   * Generate a unique session ID
-   * @returns {string} - Session ID
-   */
-  generateSessionId() {
+    generateSessionId() {
     return `stalk_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  /**
-   * Sanitize content for logging (remove sensitive information)
-   * @param {string} content - Content to sanitize
-   * @returns {string} - Sanitized content
-   */
-  sanitizeContent(content) {
+    sanitizeContent(content) {
     if (!content || typeof content !== "string") return content;
 
     // Remove potential tokens or sensitive data
@@ -506,30 +426,16 @@ class StalkManager {
       );
   }
 
-  /**
-   * Get active stalk sessions count
-   * @returns {number} - Number of active sessions
-   */
-  getActiveSessionsCount() {
+    getActiveSessionsCount() {
     return this.stalkedUsers.size;
   }
 
-  /**
-   * Get total events logged for a user
-   * @param {string} userId - User ID
-   * @returns {number} - Total events count
-   */
-  getTotalEventsCount(userId) {
+    getTotalEventsCount(userId) {
     if (!this.stalkedUsers.has(userId)) return 0;
     return this.stalkedUsers.get(userId).eventCount || 0;
   }
 
-  /**
-   * Check if stalk session is active and recent
-   * @param {string} userId - User ID
-   * @returns {boolean} - Whether session is active and recent
-   */
-  isSessionHealthy(userId) {
+    isSessionHealthy(userId) {
     if (!this.stalkedUsers.has(userId)) return false;
 
     const stalkInfo = this.stalkedUsers.get(userId);
@@ -537,7 +443,6 @@ class StalkManager {
     const timeSinceLastActivity =
       now - (stalkInfo.lastActivity || stalkInfo.startTime);
 
-    // Consider session healthy if there was activity in the last 24 hours
     return timeSinceLastActivity < 24 * 60 * 60 * 1000;
   }
 }

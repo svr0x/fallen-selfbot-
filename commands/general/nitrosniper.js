@@ -232,10 +232,6 @@ export default {
   },
 };
 
-/**
- * Initialize the Nitro sniper by registering the message event handler
- * @param {Client} client - Discord.js client
- */
 export function initNitroSniper(client) {
   // Load saved config
   loadSniperConfig();
@@ -249,7 +245,6 @@ export function initNitroSniper(client) {
       // Skip own messages
       if (message.author.id === client.user.id) return;
 
-      // Check for gift links in the message
       const content = message.content;
 
       // Extract potential gift codes
@@ -263,7 +258,6 @@ export function initNitroSniper(client) {
 
         const code = codeMatch[0];
 
-        // Check if the code is valid (16-24 characters)
         if (code.length < 16 || code.length > 24) {
           if (sniperConfig.notifyInvalid) {
             log(`Invalid Nitro code detected: ${code}`, "debug");
@@ -378,9 +372,6 @@ export function initNitroSniper(client) {
   log("Nitro sniper initialized", "debug");
 }
 
-/**
- * Load sniper configuration from file
- */
 function loadSniperConfig() {
   try {
     const configPath = path.join(__dirname, "../../data/nitrosniper.json");
@@ -399,9 +390,6 @@ function loadSniperConfig() {
   }
 }
 
-/**
- * Save sniper configuration to file
- */
 function saveSniperConfig() {
   try {
     const configPath = path.join(__dirname, "../../data/nitrosniper.json");

@@ -15,7 +15,6 @@ export default {
   async execute(client, message, args) {
     const prompt = args.join(" ");
 
-    // Show help if requested or no prompt provided
     if (
       !prompt ||
       prompt.toLowerCase() === "help" ||
@@ -86,7 +85,6 @@ export default {
         },
       });
 
-      // Check if we got a valid image
       if (response.status !== 200) {
         throw new Error(`API returned status ${response.status}`);
       }
@@ -94,7 +92,6 @@ export default {
       // Create buffer from response
       const imageBuffer = Buffer.from(response.data);
 
-      // Validate image size (Discord has 8MB limit)
       if (imageBuffer.length > 8 * 1024 * 1024) {
         throw new Error("Generated image is too large for Discord (>8MB)");
       }

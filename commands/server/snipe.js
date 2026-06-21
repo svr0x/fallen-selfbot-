@@ -17,11 +17,9 @@ export default {
       // Determine which channel to snipe from
       let targetChannel = message.channel;
 
-      // If a channel is mentioned, use that instead
       if (message.mentions.channels.size > 0) {
         targetChannel = message.mentions.channels.first();
       }
-      // If a channel ID is provided, try to get that channel
       else if (args[0] && !isNaN(args[0])) {
         const channel =
           message.guild?.channels.cache.get(args[0]) ||
@@ -31,8 +29,6 @@ export default {
         }
       }
 
-      // Get the deleted message cache from the messageDelete event
-      // This is a workaround since we can't directly import from the event file
       const deletedMessages = client._deletedMessages || new Map();
 
       // Debug: Log the current cache state
@@ -42,7 +38,6 @@ export default {
       );
       log(`Looking for messages in channel ID: ${targetChannel.id}`, "debug");
 
-      // Get the deleted message for this channel
       const deletedMessage = deletedMessages.get(targetChannel.id);
 
       // If no message was found
@@ -71,7 +66,6 @@ export default {
 
       // Handle content with proper formatting
       if (deletedMessage.content && deletedMessage.content.trim().length > 0) {
-        // If content is short, show it inline
         if (deletedMessage.content.length < 100) {
           snipeMessage += `> Content:** ${deletedMessage.content}\n`;
         } else {
@@ -82,7 +76,6 @@ export default {
         snipeMessage += `> Content:** *No text content*\n`;
       }
 
-      // Add attachment info if there were any
       if (deletedMessage.attachments && deletedMessage.attachments.length > 0) {
         snipeMessage += `> Attachments:**\n`;
 
@@ -94,7 +87,6 @@ export default {
       // Send the message
       await message.channel.send(snipeMessage);
 
-      // If there are image attachments, send them separately
       if (deletedMessage.attachments && deletedMessage.attachments.length > 0) {
         const imageAttachments = deletedMessage.attachments.filter(
           (att) => att.contentType && att.contentType.startsWith("image/")
@@ -103,13 +95,11 @@ export default {
         if (imageAttachments.length > 0) {
           await message.channel.send("> Deleted Images:**");
 
-          // Send up to 3 images to avoid spam
           const maxImages = Math.min(imageAttachments.length, 3);
           for (let i = 0; i < maxImages; i++) {
             await message.channel.send(imageAttachments[i].url);
           }
 
-          // If there are more images, mention it
           if (imageAttachments.length > maxImages) {
             await message.channel.send(
               `> *${

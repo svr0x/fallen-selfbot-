@@ -46,7 +46,6 @@ export default {
     }
 
     try {
-      // Get the member object from the guild
       targetMember = await message.guild.members.fetch(targetUser.id);
     } catch (error) {
       return message.channel.send(
@@ -54,7 +53,6 @@ export default {
       );
     }
 
-    // Check if the target user is in a voice channel
     if (!targetMember.voice.channel) {
       return message.channel.send(
         `> ${targetUser.username} is not in a voice channel!**`
@@ -65,7 +63,6 @@ export default {
     let targetChannel = null;
     const channelInput = args[1];
 
-    // Try to find channel by mention first
     if (message.mentions.channels.size > 0) {
       targetChannel = message.mentions.channels.first();
     } else {
@@ -90,14 +87,12 @@ export default {
       );
     }
 
-    // Check if target channel is a voice channel
     if (targetChannel.type !== 2) {
       return message.channel.send(
         "> Target channel must be a voice channel!**"
       );
     }
 
-    // Check if user is already in the target channel
     if (targetMember.voice.channel.id === targetChannel.id) {
       return message.channel.send(
         `> ${targetUser.username} is already in ${targetChannel.name}!**`
@@ -105,7 +100,6 @@ export default {
     }
 
     
-    // Check if bot can connect to target channel
     if (!targetChannel.permissionsFor(botMember).has("Connect")) {
       return message.channel.send(
         `> I don't have permission to connect to ${targetChannel.name}!**`
@@ -126,7 +120,6 @@ export default {
     try {
       const fromChannel = targetMember.voice.channel.name;
 
-      // Move the user to the target channel
       await targetMember.voice.setChannel(
         targetChannel,
         `Voice moved by ${message.author.tag}`

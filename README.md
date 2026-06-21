@@ -6,11 +6,11 @@
 
 <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=28&duration=4000&pause=1000&color=00FFFF&center=true&vCenter=true&width=600&lines=Summoning+Silence...;A+Powerful+Discord+Selfbot;Multifunctional+%26+Feature-Rich;Built+with+ES6+" alt="Typing SVG" />
 
-[![Discord Server](https://img.shields.io/badge/Discord-Join%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/b3hZG4R7Mf)
-[![GitHub stars](https://img.shields.io/github/stars/svrOx./fallen?color=yellow&style=for-the-badge)](https://github.com/svrOx./fallen/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/svrOx./fallen?color=green&style=for-the-badge)](https://github.com/svrOx./fallen/network)
-[![GitHub issues](https://img.shields.io/github/issues/svrOx./fallen?color=red&style=for-the-badge)](https://github.com/svrOx./fallen/issues)
-[![License](https://img.shields.io/github/license/svrOx./fallen?color=blue&style=for-the-badge)](LICENSE)
+[![Discord Server](https://img.shields.io/badge/Discord-Join%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/DWxCXT8ch5)
+[![GitHub stars](https://img.shields.io/github/stars/svr0x/fallen-selfbot-?color=yellow&style=for-the-badge)](https://github.com/svr0x/fallen-selfbot-/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/svr0x/fallen-selfbot-?color=green&style=for-the-badge)](https://github.com/svr0x/fallen-selfbot-/network)
+[![GitHub issues](https://img.shields.io/github/issues/svr0x/fallen-selfbot-?color=red&style=for-the-badge)](https://github.com/svr0x/fallen-selfbot-/issues)
+[![License](https://img.shields.io/github/license/svr0x/fallen-selfbot-?color=blue&style=for-the-badge)](LICENSE)
 
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -65,7 +65,7 @@
 #### **Option 1: Git Clone (Recommended)**
 ```bash
 # Clone the repository
-git clone https://github.com/svrOx./fallen.git
+git clone https://github.com/svr0x/fallen-selfbot-.git
 
 # Navigate to project directory
 cd fallen
@@ -76,7 +76,7 @@ npm install
 
 #### **Option 2: Download ZIP (If git clone fails)**
 If `git clone` doesn't work for you:
-1. **Go to** the GitHub repository: https://github.com/svrOx./fallen
+1. **Go to** the GitHub repository: https://github.com/svr0x/fallen-selfbot-
 2. **Click** the green **"Code"** button at the top
 3. **Select** "Download ZIP"
 4. **Extract** the ZIP file to your desired location
@@ -266,15 +266,15 @@ rpc:
     type: "PLAYING"
     name: "fallen Selfbot"
     details: "Summoning Silence"
-    state: "github.com/svrOx."
+    state: "github.com/svr0x"
     assets:
       large_image: "fallen"
       large_text: "fallen Selfbot"
       small_image: "thunder"
-      small_text: "github.com/svrOx."
+      small_text: "github.com/svr0x"
     buttons:
       - label: "GitHub"
-        url: "https://github.com/svrOx./fallen"
+        url: "https://github.com/svr0x/fallen-selfbot-"
 ```
 
 **Commands:** `+rpc enable`, `+rpc setType`, `+rpc setLargeImage`, etc.
@@ -362,7 +362,7 @@ bad_phrases:
 
 ```bash
 # Clone repository
-git clone https://github.com/svrOx./fallen.git
+git clone https://github.com/svr0x/fallen-selfbot-.git
 cd fallen
 
 # Install dependencies
@@ -408,17 +408,17 @@ npm run lint
 
 <div align="center">
 
-[![Discord Server](https://img.shields.io/badge/Discord-Join%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/b3hZG4R7Mf)
-[![GitHub Issues](https://img.shields.io/badge/GitHub-Report%20Issue-red?style=for-the-badge&logo=github&logoColor=white)](https://github.com/svrOx./fallen/issues)
+[![Discord Server](https://img.shields.io/badge/Discord-Join%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/DWxCXT8ch5)
+[![GitHub Issues](https://img.shields.io/badge/GitHub-Report%20Issue-red?style=for-the-badge&logo=github&logoColor=white)](https://github.com/svr0x/fallen-selfbot-/issues)
 
 </div>
 
 ### 💬 **Get Help & Share Ideas**
 
-- 🎮 **Discord Server**: [Join our community](https://discord.gg/b3hZG4R7Mf) - **I'm waiting for your suggestions for more features!**
+- 🎮 **Discord Server**: [Join our community](https://discord.gg/DWxCXT8ch5) - **I'm waiting for your suggestions for more features!**
 - 🐛 **Bug Reports & Error Fixing**: I'm available on Discord at our support server for guidance
 - 💡 **Feature Requests**: Share your ideas with me on Discord - I love hearing from users!
-- 📧 **Direct Contact**: `svrOx.` on Discord
+- 📧 **Direct Contact**: `fallen` on Discord
 - ⭐ **Reviews**: I'm waiting for your reviews and feedback on our Discord server!
 
 ---
@@ -427,9 +427,9 @@ npm run lint
 
 <div align="center">
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=svrOx.&show_icons=true&theme=tokyonight&hide_border=true)
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=svr0x&show_icons=true&theme=tokyonight&hide_border=true)
 
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=svrOx.&layout=compact&theme=tokyonight&hide_border=true)
+![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=svr0x&layout=compact&theme=tokyonight&hide_border=true)
 
 </div>
 
@@ -487,8 +487,8 @@ If you find fallen useful, please consider supporting the project:
 
 <div align="center">
 
-[![Star on GitHub](https://img.shields.io/badge/⭐-Star%20on%20GitHub-yellow?style=for-the-badge)](https://github.com/svrOx./fallen)
-[![Fork on GitHub](https://img.shields.io/badge/🍴-Fork%20on%20GitHub-green?style=for-the-badge)](https://github.com/svrOx./fallen/fork)
+[![Star on GitHub](https://img.shields.io/badge/⭐-Star%20on%20GitHub-yellow?style=for-the-badge)](https://github.com/svr0x/fallen-selfbot-)
+[![Fork on GitHub](https://img.shields.io/badge/🍴-Fork%20on%20GitHub-green?style=for-the-badge)](https://github.com/svr0x/fallen-selfbot-/fork)
 
 **Show your support by giving this project a ⭐ star!**
 
@@ -500,10 +500,10 @@ If you find fallen useful, please consider supporting the project:
 
 <div align="center">
 
-### 🌟 **Made with ❤️ by [svrOx.](https://github.com/svrOx.) in India 🇮🇳**
+### 🌟 **Made with ❤️ by [svr0x](https://github.com/svr0x) in India 🇮🇳**
 
 **⚡ fallen - Summoning Silence ⚡**
 
-[![Visitors](https://visitor-badge.laobi.icu/badge?page_id=svrOx..fallen)](https://github.com/svrOx./fallen)
+[![Visitors](https://visitor-badge.laobi.icu/badge?page_id=svr0x.fallen-selfbot-)](https://github.com/svr0x/fallen-selfbot-)
 
 </div>

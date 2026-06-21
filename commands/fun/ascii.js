@@ -38,7 +38,6 @@ export default {
       return message.channel.send(fontList);
     }
 
-    // Check if first argument is a font name
     const availableFonts = figlet.fontsSync();
     let font = "Standard";
     let text = input;

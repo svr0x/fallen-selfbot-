@@ -14,7 +14,6 @@ export default {
     try {
       const config = loadConfig();
 
-      // Check if crypto section exists in config
       if (!config.crypto) {
         return message.channel.send(
           "Crypto configuration not found!**\n" +
@@ -39,7 +38,6 @@ export default {
         );
       }
 
-      // Display the LTC address with nice formatting
       const response =
         `🪙 **Litecoin Address:**\n` +
         `\`\`\`${ltcAddress}\`\`\`\n` +

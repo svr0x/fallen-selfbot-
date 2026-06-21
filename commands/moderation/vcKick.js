@@ -45,7 +45,6 @@ export default {
     }
 
     try {
-      // Get the member object from the guild
       targetMember = await message.guild.members.fetch(targetUser.id);
     } catch (error) {
       return message.channel.send(
@@ -53,7 +52,6 @@ export default {
       );
     }
 
-    // Check if the target user is in a voice channel
     if (!targetMember.voice.channel) {
       return message.channel.send(
         `> ${targetUser.username} is not in a voice channel!**`
@@ -61,7 +59,6 @@ export default {
     }
 
     
-    // Check role hierarchy - can't kick users with higher or equal roles
     if (
       targetMember.roles.highest.position >=
         message.member.roles.highest.position &&
@@ -75,7 +72,6 @@ export default {
     try {
       const currentChannel = targetMember.voice.channel.name;
 
-      // Disconnect the user from voice channel (kick them)
       await targetMember.voice.disconnect(
         "Voice kicked by " + message.author.tag
       );

@@ -16,7 +16,6 @@ export default {
         // Check current slowmode
         const currentSlowmode = message.channel.rateLimitPerUser;
 
-        // If no seconds provided, show current slowmode
         if (!args[0]) {
             return message.channel.send(`> ℹ️ Current slowmode is ${currentSlowmode}s`);
         }
@@ -30,7 +29,6 @@ export default {
             return message.channel.send(`> ❌ Slowmode cannot exceed 6 hours (21600 seconds).`);
         }
 
-        // Check if the requested slowmode matches the current setting
         if (seconds === currentSlowmode) {
             return message.channel.send(`> ℹ️ Slowmode is already set to ${seconds}s.`);
         }

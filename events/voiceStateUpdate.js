@@ -1,18 +1,3 @@
-/**
- * VOICE STATE UPDATE EVENT HANDLER
- *
- * This event handler processes voice channel state changes for users.
- * It handles two main functionalities:
- * - Stalk logging: Records voice activity for users being stalked
- * - Auto-reconnect: Automatically reconnects the selfbot to voice channels
- *
- * Voice state changes include joining, leaving, and moving between voice channels,
- * as well as mute/deafen status changes. The handler logs these activities
- * for stalked users and manages selfbot voice connection stability.
- *
- * @module events/voiceStateUpdate
- * @author svrOx.
- */
 
 import { log } from "../utils/functions.js";
 import StalkManager from "../utils/StalkManager.js";
@@ -21,39 +6,23 @@ export default {
   name: "voiceStateUpdate",
   once: false,
 
-  /**
-   * Handle voice state changes for users and selfbot
-   *
-   * @async
-   * @function execute
-   * @param {Client} client - Discord.js client instance
-   * @param {VoiceState} oldState - Previous voice state
-   * @param {VoiceState} newState - New voice state
-   * @description Processes voice channel activity for stalk logging and
-   *              manages selfbot auto-reconnect functionality when disconnected
-   *              from voice channels unexpectedly.
-   */
-  execute: async (client, oldState, newState) => {
-    // Handle stalk logging for monitored users' voice activity
+    execute: async (client, oldState, newState) => {
     if (StalkManager.isStalking(oldState.id)) {
       const userId = oldState.id;
       const guildName = oldState.guild?.name || newState.guild?.name;
 
-      // User joined a voice channel (wasn't in voice, now is)
       if (!oldState.channelId && newState.channelId) {
         StalkManager.logVoiceEvent(userId, "VOICE_JOIN", {
           guildName: guildName,
           channelName: newState.channel.name,
         });
       }
-      // User left a voice channel (was in voice, now isn't)
       else if (oldState.channelId && !newState.channelId) {
         StalkManager.logVoiceEvent(userId, "VOICE_LEAVE", {
           guildName: guildName,
           channelName: oldState.channel.name,
         });
       }
-      // User moved between voice channels (changed channels)
       else if (
         oldState.channelId &&
         newState.channelId &&
@@ -68,14 +37,11 @@ export default {
     }
 
     // Handle selfbot auto-reconnect functionality
-    // Only process voice state changes for the selfbot itself
     if (oldState.id !== client.user.id) return;
 
-    // Check if auto-reconnect is enabled in configuration
     const vcConfig = client.config.vc_command;
     if (!vcConfig || !vcConfig.auto_reconnect) return;
 
-    // Detect when selfbot gets disconnected from voice channel
     if (oldState.channelId && !newState.channelId) {
       log(
         `Selfbot disconnected from voice channel: ${
@@ -84,7 +50,6 @@ export default {
         "debug"
       );
 
-      // Check if we have a record of the last joined channel
       const lastChannel = client.lastJoinedVoiceChannel;
       if (!lastChannel) {
         log(
@@ -133,7 +98,6 @@ export default {
             return;
           }
 
-          // Attempt to join via WebSocket opcode 4
           if (client.ws.shards.first()) {
             client.ws.shards.first().send({
               op: 4,

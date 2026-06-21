@@ -44,7 +44,6 @@ export class RpcManager {
 
   updateConfig(newConfig) {
     this.rpcConfig = newConfig;
-    // Also save to file so it persists
     this.saveConfig(newConfig).catch(() => {});
   }
 
@@ -95,13 +94,7 @@ export class RpcManager {
     return assets;
   }
 
-  // Convert any image URL to proper format for RichPresence
-  // For Discord CDN URLs WITHOUT a signature, converts to mp: shorthand.
   // User-uploaded attachments (cdn.discordapp.com/attachments/... with
-  // ?ex=&is=&hm= signature params) must keep their full signed URL and go
-  // through RichPresence.getExternal — stripping the query string breaks the
-  // signature and the asset silently fails to resolve (blank/broken image),
-  // which is especially noticeable on animated gifs.
   async processImageAsset(client, imageInput) {
     if (!imageInput) return null;
     if (/^\d+$/.test(imageInput)) return imageInput;
@@ -132,7 +125,6 @@ export class RpcManager {
           return `mp:${resolved[0].external_asset_path}`;
         }
       } catch {
-        // fall through to raw url as last resort
       }
       return imageInput;
     }
@@ -199,9 +191,6 @@ export class RpcManager {
         rpc.setEndTimestamp(new Date(Number(rpcData.timestamps.end)));
       }
 
-      // Party — NOTE: Discord RichPresence does NOT support custom label text
-      // The "id" field shows as a group identifier, not visible text
-      // Party size (current/max) IS visible as "X of Y"
       if (rpcData.party?.current && rpcData.party?.max) {
         rpc.setParty({
           id: this.generateUUID(),

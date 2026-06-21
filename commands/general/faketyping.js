@@ -20,9 +20,7 @@ export default {
 
       const channelId = message.channel.id;
 
-      // Check if user wants to stop typing
       if (args[0]?.toLowerCase() === "stop") {
-        // Check if there's an active typing session for this channel
         if (typingSessions.has(channelId)) {
           const session = typingSessions.get(channelId);
 
@@ -51,7 +49,6 @@ export default {
         return;
       }
 
-      // Check if there's already an active typing session for this channel
       if (typingSessions.has(channelId)) {
         await message.channel.send(
           "> already typing — use faketyping stop"
@@ -86,7 +83,6 @@ export default {
         // Add cancellation listener
         if (task.signal) {
           task.signal.addEventListener("abort", () => {
-            // Only show cancellation message if it wasn't a natural completion
             if (!task.signal.reason || task.signal.reason !== "completed") {
               isCancelled = true;
               typingSessions.delete(channelId);
@@ -127,7 +123,6 @@ export default {
                 }
               }
 
-              // Wait 3 seconds before next typing indicator
               await new Promise((resolve) => {
                 const timeout = setTimeout(resolve, 3000);
                 if (task.signal) {
@@ -145,7 +140,6 @@ export default {
 
               log(`Error in typing task: ${error.message}`, "error");
 
-              // If we can't send typing anymore, stop the task
               if (error.status === 403 || error.code === 50001) {
                 log(
                   `Automatically stopped fake typing in channel #${
@@ -159,7 +153,6 @@ export default {
           }
         };
 
-        // Start the typing loop (don't await it, let it run in background)
         startTypingLoop().catch((error) => {
           log(`Error in typing loop: ${error.message}`, "error");
         });
@@ -174,8 +167,6 @@ export default {
       } catch (error) {
         log(`Error starting fake typing: ${error.message}`, "error");
         await message.channel.send(`> ❌ An error occurred: ${error.message}`);
-        // Don't call task.stop() here since we want the task to continue running
-        // The task will be stopped when the user runs "faketyping stop"
       }
     } catch (error) {
       log(`Error in faketyping command: ${error.message}`, "error");

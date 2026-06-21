@@ -1,32 +1,8 @@
-/**
- * CLONE COMMAND
- *
- * This command provides Discord server cloning functionality for selfbots.
- * It clones channels, categories, and roles from one server to another while
- * maintaining the exact same hierarchy and order.
- *
- * Features:
- * - Server access validation for both source and destination servers
- * - Channel and category cloning with hierarchy preservation
- * - Role cloning with permissions and hierarchy maintenance
- * - Comprehensive progress tracking and error handling
- * - Rate limiting to prevent Discord API abuse
- * - Task management for long-running operations
- *
- * WARNING: This is for selfbot use only. Ensure you have proper permissions
- * in the destination server (preferably Administrator) before running.
- *
- * @module commands/server/clone
- * @author svrOx.
- */
 
 import { log, hasPermissions } from '../../utils/functions.js';
 import TaskManager from '../../utils/TaskManager.js';
 import RateLimitManager from '../../utils/RateLimitManager.js';
 
-
-
-// Map string channel types to numeric values for API calls
 const CHANNEL_TYPE_MAP = {
   'GUILD_TEXT': 0,
   'GUILD_VOICE': 2,
@@ -49,13 +25,7 @@ export default {
   permissions: ['ManageChannels', 'ManageRoles'],
   cooldown: 60, // Long cooldown due to intensive operation
 
-  /**
-   * Execute the clone command
-   * @param {Client} client - Discord.js client instance
-   * @param {Message} message - The message object
-   * @param {Array} args - Command arguments [source_server_id, destination_server_id]
-   */
-  execute: async (client, message, args) => {
+    execute: async (client, message, args) => {
     try {
       // Validate arguments
       if (args.length < 2) {
@@ -163,7 +133,6 @@ export default {
       } catch (error) {
         log(`Error during clone operation: ${error.message}`, 'error');
 
-        // Try to update status message if it exists
         try {
           await message.channel.send(
             `> error: Clone operation failed: ${error.message}`
@@ -185,16 +154,8 @@ export default {
   },
 };
 
-/**
- * Validate that the selfbot has access to both source and destination servers
- * @param {Client} client - Discord.js client instance
- * @param {string} sourceServerId - Source server ID
- * @param {string} destinationServerId - Destination server ID
- * @returns {Object} Validation result with guild objects and access status
- */
 async function validateServerAccess(client, sourceServerId, destinationServerId) {
   try {
-    // Check if selfbot has access to source server
     const sourceGuild = client.guilds.cache.get(sourceServerId);
     if (!sourceGuild) {
       return {
@@ -203,7 +164,6 @@ async function validateServerAccess(client, sourceServerId, destinationServerId)
       };
     }
 
-    // Check if selfbot has access to destination server
     const destinationGuild = client.guilds.cache.get(destinationServerId);
     if (!destinationGuild) {
       return {
@@ -212,7 +172,6 @@ async function validateServerAccess(client, sourceServerId, destinationServerId)
       };
     }
 
-    // Check if selfbot has necessary permissions in destination server
     const destinationMember = destinationGuild.members.cache.get(client.user.id);
     if (!destinationMember) {
       return {
@@ -221,7 +180,6 @@ async function validateServerAccess(client, sourceServerId, destinationServerId)
       };
     }
 
-    // Check for required permissions in destination server
     const requiredPermissions = ['ManageChannels', 'ManageRoles'];
     const missingPermissions = [];
 
@@ -238,7 +196,6 @@ async function validateServerAccess(client, sourceServerId, destinationServerId)
       };
     }
 
-    // Check if selfbot has Administrator permission for better results
     const hasAdministrator = hasPermissions(destinationMember, 'Administrator');
     if (!hasAdministrator) {
       log('Warning: Selfbot does not have Administrator permission. Some roles may not be cloned due to hierarchy restrictions.', 'warn');
@@ -262,16 +219,10 @@ async function validateServerAccess(client, sourceServerId, destinationServerId)
   }
 }
 
-/**
- * Analyze the structure of the source server to prepare for cloning
- * @param {Guild} sourceGuild - Source Discord guild object
- * @returns {Object} Server structure with organized channels, categories, and roles
- */
 async function analyzeServerStructure(sourceGuild) {
   try {
     log(`Analyzing structure of server: ${sourceGuild.name}`, 'debug');
 
-    // Get all channels and sort them by position to maintain order
     const allChannels = Array.from(sourceGuild.channels.cache.values())
       .sort((a, b) => a.position - b.position);
 
@@ -279,12 +230,10 @@ async function analyzeServerStructure(sourceGuild) {
     const categories = allChannels.filter(channel => channel.type === 'GUILD_CATEGORY');
     const channels = allChannels.filter(channel => channel.type !== 'GUILD_CATEGORY');
 
-    // Get all roles and sort them by position (highest first, excluding @everyone)
     const roles = Array.from(sourceGuild.roles.cache.values())
       .filter(role => role.name !== '@everyone')
       .sort((a, b) => b.position - a.position);
 
-    // Create a mapping of categories to their channels for hierarchy preservation
     const categoryChannelMap = new Map();
 
     // Initialize category map
@@ -292,7 +241,6 @@ async function analyzeServerStructure(sourceGuild) {
       categoryChannelMap.set(category.id, []);
     });
 
-    // Group channels by their parent category and extract channel data
     channels.forEach(channel => {
 
       const channelData = {
@@ -327,7 +275,6 @@ async function analyzeServerStructure(sourceGuild) {
       }
     });
 
-    // Sort channels within each category by position
     categoryChannelMap.forEach((channelList) => {
       channelList.sort((a, b) => a.position - b.position);
     });
@@ -370,15 +317,6 @@ async function analyzeServerStructure(sourceGuild) {
   }
 }
 
-/**
- * Clone channels and categories from source to destination server
- * @param {Guild} destinationGuild - Destination Discord guild object
- * @param {Object} serverStructure - Analyzed server structure from source
- * @param {RateLimitManager} rateLimiter - Rate limiter instance
- * @param {Object} task - Task manager task object
- * @param {Message} statusMessage - Status message to update progress
- * @returns {Object} Results with success/failure counts
- */
 async function cloneChannelsAndCategories(destinationGuild, serverStructure, rateLimiter, task, statusMessage) {
   const results = {
     success: 0,
@@ -394,7 +332,6 @@ async function cloneChannelsAndCategories(destinationGuild, serverStructure, rat
 
     log(`Starting to clone ${results.total} channels and categories`, 'debug');
 
-    // Map to store created category IDs for channel parenting
     const categoryIdMap = new Map();
 
     // Step 1: Create categories first
@@ -412,7 +349,6 @@ async function cloneChannelsAndCategories(destinationGuild, serverStructure, rat
             reason: 'Category cloned by selfbot'
           });
 
-          // Store the mapping for later channel parenting
           categoryIdMap.set(categoryData.id, newCategory.id);
 
           log(`Created category: ${categoryData.name}`, 'debug');
@@ -448,7 +384,6 @@ async function cloneChannelsAndCategories(destinationGuild, serverStructure, rat
       } catch (error) {
         log(`Failed to create channel ${channelData.name}: ${error.message}`, 'error');
         results.failed++;
-        // Continue with next channel instead of stopping
       }
     }
 
@@ -484,7 +419,6 @@ async function cloneChannelsAndCategories(destinationGuild, serverStructure, rat
         } catch (error) {
           log(`Failed to create channel ${channelData.name} in category ${categoryData.name}: ${error.message}`, 'error');
           results.failed++;
-          // Continue with next channel instead of stopping
         }
       }
     }
@@ -498,12 +432,6 @@ async function cloneChannelsAndCategories(destinationGuild, serverStructure, rat
   }
 }
 
-/**
- * Create a channel in the destination server
- * @param {Guild} destinationGuild - Destination Discord guild object
- * @param {Object} channelData - Channel data from source server
- * @param {string|null} parentId - Parent category ID (null for no category)
- */
 async function createChannel(destinationGuild, channelData, parentId = null) {
   const channelOptions = {
     type: CHANNEL_TYPE_MAP[channelData.type] || channelData.type,
@@ -525,14 +453,12 @@ async function createChannel(destinationGuild, channelData, parentId = null) {
     if (channelData.userLimit) channelOptions.userLimit = channelData.userLimit;
   }
 
-  // Create the channel with name as first parameter
   const newChannel = await destinationGuild.channels.create(channelData.name, channelOptions);
 
   // Apply permission overwrites if they exist
   if (channelData.permissionOverwrites && channelData.permissionOverwrites.length > 0) {
     for (const overwrite of channelData.permissionOverwrites) {
       try {
-        // Skip overwrites for roles/users that don't exist in destination server
         if (overwrite.type === 'role') {
           const role = destinationGuild.roles.cache.find(r => r.name === overwrite.name);
           if (role) {
@@ -548,17 +474,10 @@ async function createChannel(destinationGuild, channelData, parentId = null) {
   return newChannel;
 }
 
-/**
- * Update progress message with current status
- * @param {Message} statusMessage - Status message to update
- * @param {Object} results - Current results object
- * @param {string} currentStep - Current step being processed
- */
 async function updateProgress(statusMessage, results, currentStep) {
   try {
     const progressText = `> ⏳ **Cloning ${currentStep}...** (${results.success + results.failed}/${results.total})`;
 
-    // Only update every few operations to avoid rate limits
     if ((results.success + results.failed) % 5 === 0 || results.success + results.failed === results.total) {
       await statusMessage.edit(progressText);
     }
@@ -568,15 +487,6 @@ async function updateProgress(statusMessage, results, currentStep) {
   }
 }
 
-/**
- * Clone roles from source to destination server
- * @param {Guild} destinationGuild - Destination Discord guild object
- * @param {Object} serverStructure - Analyzed server structure from source
- * @param {RateLimitManager} rateLimiter - Rate limiter instance
- * @param {Object} task - Task manager task object
- * @param {Message} statusMessage - Status message to update progress
- * @returns {Object} Results with success/failure counts
- */
 async function cloneRoles(destinationGuild, serverStructure, rateLimiter, task, statusMessage) {
   const results = {
     success: 0,
@@ -587,11 +497,9 @@ async function cloneRoles(destinationGuild, serverStructure, rateLimiter, task, 
   try {
     log(`Starting to clone ${results.total} roles`, 'debug');
 
-    // Get current selfbot member in destination server to check role hierarchy
     const selfbotMember = destinationGuild.members.cache.get(destinationGuild.client.user.id);
     const selfbotHighestPosition = selfbotMember ? selfbotMember.roles.highest.position : 1;
 
-    // Clone roles in reverse order (lowest position first) to maintain hierarchy
     const rolesToClone = [...serverStructure.roles].reverse();
 
     for (const roleData of rolesToClone) {
@@ -602,8 +510,6 @@ async function cloneRoles(destinationGuild, serverStructure, rateLimiter, task, 
 
       try {
         await rateLimiter.execute(async () => {
-          // Skip roles that would be higher than selfbot's highest role
-          // Only skip if selfbot doesn't have Administrator permission
           const selfbotHasAdmin = selfbotMember && hasPermissions(selfbotMember, 'Administrator');
           if (!selfbotHasAdmin && roleData.position >= selfbotHighestPosition) {
             log(`Skipping role ${roleData.name} - position too high (${roleData.position} >= ${selfbotHighestPosition})`, 'warn');
@@ -621,9 +527,6 @@ async function cloneRoles(destinationGuild, serverStructure, rateLimiter, task, 
             reason: 'Role cloned by selfbot'
           };
 
-          // Skip icon processing to avoid file system errors
-          // Role icons require special handling and server boost level
-
           // Add unicode emoji if available
           if (roleData.unicodeEmoji) {
             roleOptions.unicodeEmoji = roleData.unicodeEmoji;
@@ -632,7 +535,6 @@ async function cloneRoles(destinationGuild, serverStructure, rateLimiter, task, 
           // Create the role
           const newRole = await destinationGuild.roles.create(roleOptions);
 
-          // Try to set position if selfbot has admin permissions
           if (selfbotHasAdmin && roleData.position > 0) {
             try {
               await destinationGuild.roles.setPosition(newRole, roleData.position);
@@ -657,7 +559,6 @@ async function cloneRoles(destinationGuild, serverStructure, rateLimiter, task, 
           log(`Failed to create role ${roleData.name}: ${error.message}`, 'error');
         }
         results.failed++;
-        // Continue with next role instead of stopping
       }
     }
 

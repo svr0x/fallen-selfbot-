@@ -323,7 +323,7 @@ bad_phrases:
 
 ## 🆘 **Need Help?**
 
-- **Discord Server**: [Join our support server](https://discord.gg/b3hZG4R7Mf)
+- **Discord Server**: [Join our support server](https://discord.gg/ypXHdGQaq)
 - **Token Guide**: [GET_TOKEN.md](GET_TOKEN.md)
 - **RPC Guide**: [RPC.md](RPC.md) - Complete Rich Presence setup guide
 - **Contact**: `svrOx.` on Discord

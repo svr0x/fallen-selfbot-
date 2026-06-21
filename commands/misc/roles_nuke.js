@@ -13,13 +13,7 @@ export default {
   permissions: ["ManageRoles"],
   cooldown: 60,
 
-  /**
-   * Execute the roles_nuke command
-   * @param {Client} client - Discord.js client instance
-   * @param {Message} message - The message object
-   * @param {Array} args - Command arguments
-   */
-  execute: async (client, message, args) => {
+    execute: async (client, message, args) => {
     try {
       if (message.author.id !== client.user.id) return;
 
@@ -83,7 +77,6 @@ export default {
             continue;
           }
 
-          // Skip managed roles (created by real bots)
           if (role.managed) {
             log(
               `Skipping deletion of managed role ${role.name} (${role.id})`,
@@ -92,7 +85,6 @@ export default {
             continue;
           }
 
-          // Skip roles higher or equal in the role hierarchy
           if (role.position >= botHighestRolePosition) {
             log(
               `Skipping deletion of role ${role.name} (${role.id}) due to role hierarchy`,
@@ -125,7 +117,6 @@ export default {
 
         log(`All roles deleted successfully`, "debug");
 
-        // Verify that no roles are left (except required ones)
         const remainingRoles = message.guild.roles.cache.filter(
           (r) => r.name !== "@everyone"
         );

@@ -49,7 +49,6 @@ export default {
     const guildId = message.guild?.id || "dm";
     const taskName = `webhookspam_${Date.now()}`;
 
-    // Check if webhook spam task is already running
     if (TaskManager.hasTask("webhookspam", guildId)) {
       return message.channel.send(
         "> ⚠️ A webhook spam task is already running."
@@ -72,7 +71,6 @@ export default {
         );
       }
 
-      // Initialize rate limiter (allow 2 concurrent operations to avoid webhook rate limits)
       const rateLimiter = new RateLimitManager(2);
 
       // Send confirmation message
@@ -88,7 +86,6 @@ export default {
       if (task.signal) {
         task.signal.addEventListener("abort", () => {
           isCancelled = true;
-          // Only show cancellation message if it wasn't a natural completion
           if (!task.signal.reason || task.signal.reason !== "completed") {
             statusMsg
               .edit(
@@ -120,7 +117,6 @@ export default {
         promises.push(promise);
       }
 
-      // Wait for all messages to be sent
       await Promise.all(promises);
 
       // Only update status if not cancelled
@@ -131,7 +127,6 @@ export default {
               `> 📡 **Webhook:** ${webhookTest.name || "Unknown"}`
           )
           .then((msg) => {
-            // Use regular setTimeout to avoid race condition with task destruction
             setTimeout(() => {
               msg.delete().catch(() => {});
             }, 10000);
@@ -154,16 +149,10 @@ export default {
     }
   },
 
-  /**
-   * Validate if the provided URL is a valid Discord webhook URL
-   * @param {string} url - URL to validate
-   * @returns {boolean} - True if valid webhook URL
-   */
-  isValidWebhookUrl(url) {
+    isValidWebhookUrl(url) {
     try {
       const urlObj = new URL(url);
 
-      // Check if it's a Discord webhook URL
       if (
         urlObj.hostname !== "discord.com" &&
         urlObj.hostname !== "discordapp.com"
@@ -171,7 +160,6 @@ export default {
         return false;
       }
 
-      // Check if it matches webhook URL pattern
       const webhookPattern = /^\/api\/webhooks\/\d+\/[\w-]+$/;
       return webhookPattern.test(urlObj.pathname);
     } catch (error) {
@@ -179,12 +167,7 @@ export default {
     }
   },
 
-  /**
-   * Test webhook to ensure it's valid and accessible
-   * @param {string} webhookUrl - Webhook URL to test
-   * @returns {Object} - Test result with validity and info
-   */
-  async testWebhook(webhookUrl) {
+    async testWebhook(webhookUrl) {
     try {
       const response = await axios.get(webhookUrl);
 
@@ -229,12 +212,7 @@ export default {
     }
   },
 
-  /**
-   * Send a message through the webhook
-   * @param {string} webhookUrl - Webhook URL
-   * @param {string} content - Message content
-   */
-  async sendWebhookMessage(webhookUrl, content) {
+    async sendWebhookMessage(webhookUrl, content) {
     try {
       const payload = {
         content: content,

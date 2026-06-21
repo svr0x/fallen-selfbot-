@@ -12,7 +12,6 @@ export default {
         const targets = [];
         let reason = null;
 
-        // Extract multiple user IDs and optional reason
         for (let arg of args) {
             if (!isNaN(arg)) {
                 targets.push(arg);

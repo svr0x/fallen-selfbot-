@@ -11,13 +11,7 @@ export default {
     permissions: ['SendMessages'],
     cooldown: 10,
 
-    /**
-     * Execute the serverinfo command
-     * @param {Client} client - Discord.js client instance
-     * @param {Message} message - The message object
-     * @param {Array} args - Command arguments
-     */
-    execute: async (client, message, args) => {
+        execute: async (client, message, args) => {
         const guild = message.guild;
 
         try {

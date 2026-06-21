@@ -17,7 +17,6 @@ export default {
         const targets = [];
         let reason = null;
 
-        // Extract multiple users from mentions or IDs and parse optional reason
         for (let arg of args) {
             if (message.mentions.members.size > 0 && !reason) {
                 targets.push(...message.mentions.members.map(m => m.id));

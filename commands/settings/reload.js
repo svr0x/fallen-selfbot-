@@ -29,7 +29,6 @@ export default {
         "> 🔄 **Starting complete selfbot reload...**"
       );
 
-      // Step 1: Force stop ALL active tasks immediately
       await statusMsg.edit(
         "> 🔄 **Starting complete selfbot reload...**\n" +
           "> 🛑 **Force stopping all active tasks...**"
@@ -56,7 +55,6 @@ export default {
           "> 🗑️ **Clearing collections...**"
       );
 
-      // Step 3: Clear all client collections and data
       await statusMsg.edit(
         "> 🔄 **Starting complete selfbot reload...**\n" +
           "> 🛑 **Force stopping all active tasks...** ✅\n" +
@@ -69,7 +67,6 @@ export default {
 
       this.clearClientCollections(client);
 
-      // Step 4: Reload commands with detailed tracking
       const commandStats = await this.reloadCommands(client);
 
       await statusMsg.edit(
@@ -84,7 +81,6 @@ export default {
           "> 🎯 **Reloading events...**"
       );
 
-      // Step 5: Reload events with detailed tracking
       const eventStats = await this.reloadEvents(client);
 
       await statusMsg.edit(
@@ -104,7 +100,6 @@ export default {
       // Step 6: Reinitialize critical systems
       await this.reinitializeSystems(client);
 
-      // Step 7: Force garbage collection if available
       if (global.gc) {
         global.gc();
       }
@@ -162,10 +157,7 @@ export default {
     }
   },
 
-  /**
-   * Force stop all active tasks with detailed tracking
-   */
-  async forceStopAllTasks() {
+    async forceStopAllTasks() {
     const stats = { stopped: 0, failed: 0 };
 
     try {
@@ -208,7 +200,6 @@ export default {
         }
       }
 
-      // Final cleanup to ensure everything is cleared
       await TaskManager.cleanup();
 
       log(
@@ -223,15 +214,10 @@ export default {
     return stats;
   },
 
-  /**
-   * Clear Node.js module cache for hot reloading (ES modules don't use require.cache)
-   */
-  clearModuleCache() {
+    clearModuleCache() {
     const stats = { cleared: 0 };
 
     try {
-      // In ES modules, we can't clear the module cache like CommonJS
-      // Instead, we'll just force garbage collection and log that cache clearing is not needed
       log(
         "ES modules don't require manual cache clearing - using garbage collection instead",
         "debug"
@@ -255,21 +241,13 @@ export default {
     return stats;
   },
 
-  /**
-   * Clear all client collections and reset state
-   */
-  clearClientCollections(client) {
+    clearClientCollections(client) {
     try {
       // Clear command-related collections
       if (client.commands) client.commands.clear();
       if (client.cooldowns) client.cooldowns.clear();
 
-      // Clear any custom collections that might exist
       if (client.viewTasks) client.viewTasks.clear();
-
-      // Note: In ES modules, we can't dynamically import and clear session data
-      // from other modules like we could with CommonJS require()
-      // The session clearing will happen when those modules are reloaded
 
       log("Cleared all client collections", "debug");
     } catch (error) {
@@ -277,10 +255,7 @@ export default {
     }
   },
 
-  /**
-   * Reload commands with detailed error tracking
-   */
-  async reloadCommands(client) {
+    async reloadCommands(client) {
     const stats = { loaded: 0, failed: 0 };
 
     try {
@@ -296,10 +271,7 @@ export default {
     return stats;
   },
 
-  /**
-   * Reload events with detailed error tracking
-   */
-  async reloadEvents(client) {
+    async reloadEvents(client) {
     const stats = { loaded: 0, failed: 0 };
 
     try {
@@ -315,10 +287,7 @@ export default {
     return stats;
   },
 
-  /**
-   * Reinitialize critical systems
-   */
-  async reinitializeSystems(client) {
+    async reinitializeSystems(client) {
     try {
       // Reload configuration
       const config = loadConfig(true); // Force reload

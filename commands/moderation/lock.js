@@ -13,7 +13,6 @@ export default {
     execute: async (client, message, args) => {
         const reason = args.join(' ') || 'No reason provided';
 
-        // Check if the channel is already locked
         const everyoneRole = message.guild.roles.everyone;
         const permissions = message.channel.permissionOverwrites.cache.get(everyoneRole.id) || {};
         if (permissions.SendMessages === false) {
@@ -21,7 +20,6 @@ export default {
         }
 
         try {
-            // Update permissions for the default (@everyone) role
             await message.channel.permissionOverwrites.edit(everyoneRole, {
                 SendMessages: false,
             }, { reason: `${reason} | Locked by ${message.author.tag}` });

@@ -41,13 +41,13 @@ function displayBanner() {
     console.log("\n");
     console.log(coolGradient(asciiArt));
     console.log("\n");
-    console.log(chalk.red("> ") + chalk.gray("A powerful Discord selfbot"));
-    console.log(chalk.red("> ") + chalk.gray("Support server: https://discord.gg/DWxCXT8ch5"));
+    console.log(chalk.gray("> ") + chalk.gray("A powerful Discord selfbot"));
+    console.log(chalk.gray("> ") + chalk.gray("Support server: https://discord.gg/DWxCXT8ch5"));
     console.log(
-      chalk.red("> ") +
+      chalk.gray("> ") +
         chalk.gray("Use at your own risk - selfbots violate Discord's ToS")
     );
-    console.log(chalk.red("> ") + chalk.gray("Developed by svr0x"));
+    console.log(chalk.gray("> ") + chalk.gray("Developed by svr0x"));
     console.log("\n");
   } catch (error) {
     console.log("\n");

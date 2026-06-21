@@ -124,7 +124,7 @@ Rich Presence is Discord's feature that lets you display a **custom activity sta
 ### 🎯 **Adding Buttons**
 ```
 +rpc addButton "Visit GitHub" https://github.com/svrOx./fallen
-+rpc addButton "Support Server" https://discord.gg/b3hZG4R7Mf
++rpc addButton "Support Server" https://discord.gg/ypXHdGQaq
 ```
 
 ### 🗑️ **Managing Buttons**
@@ -224,7 +224,7 @@ rpc:
       - label: "GitHub"
         url: "https://github.com/svrOx./fallen"
       - label: "Support"
-        url: "https://discord.gg/b3hZG4R7Mf"
+        url: "https://discord.gg/ypXHdGQaq"
 ```
 
 ---
@@ -308,11 +308,11 @@ rpc:
 
 ### 📚 **Resources:**
 - **Discord Developer Portal:** https://discord.com/developers/applications
-- **fallen Support:** https://discord.gg/b3hZG4R7Mf
+- **fallen Support:** https://discord.gg/ypXHdGQaq
 - **Asset Guidelines:** 512x512px for large, 128x128px for small
 
 ### 💬 **Get Help:**
-- **Join** our support server: https://discord.gg/b3hZG4R7Mf
+- **Join** our support server: https://discord.gg/ypXHdGQaq
 - **Ask** in #support channel
 - **Contact:** `svrOx.` on Discord
 
@@ -359,6 +359,6 @@ Remember: Your imagination is the limit! Create unique, engaging statuses that r
 
 **Made with ❤️ by the fallen Team**
 
-[Join Our Discord](https://discord.gg/b3hZG4R7Mf) | [GitHub Repository](https://github.com/svrOx./fallen)
+[Join Our Discord](https://discord.gg/ypXHdGQaq) | [GitHub Repository](https://github.com/svrOx./fallen)
 
 </div>

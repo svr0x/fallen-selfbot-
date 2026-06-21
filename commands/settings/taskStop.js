@@ -14,7 +14,6 @@ export default {
 
   async execute(_, message, args) {
     try {
-      // Check if a specific task name was provided
       const specificTask = args.length > 0 ? args[0].toLowerCase() : null;
 
       const statusMsg = await message.channel.send(
@@ -31,7 +30,6 @@ export default {
         return;
       }
 
-      // Filter tasks if a specific name was provided
       const taskIds = Array.from(TaskManager.tasks.keys());
       const tasksToStop = specificTask
         ? taskIds.filter((id) => id.toLowerCase().includes(specificTask))
@@ -69,7 +67,6 @@ export default {
         try {
           const task = TaskManager.tasks.get(taskId);
           if (task) {
-            // First try to abort any ongoing operations
             if (TaskManager.abortControllers.has(taskId)) {
               try {
                 TaskManager.abortControllers.get(taskId).abort();
@@ -81,7 +78,6 @@ export default {
               }
             }
 
-            // Then destroy the task completely (manual cancellation)
             const result = TaskManager.destroyTask(taskId, "cancelled");
 
             if (result) {

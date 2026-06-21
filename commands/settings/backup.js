@@ -58,9 +58,7 @@ export default {
         "> 💾 **Creating backup...**\n> 👥 Collecting friends data..."
       );
 
-      // Collect friends data - try multiple methods
       try {
-        // Method 1: Try to use client's REST API directly
         if (client.rest && typeof client.rest.get === "function") {
           try {
             const friendsData = await client.rest.get(
@@ -92,7 +90,6 @@ export default {
             }
           } catch (restError) {
             log(`REST API method failed: ${restError.message}`, "debug");
-            // Continue to next method if this fails
           }
         }
 
@@ -118,7 +115,6 @@ export default {
               `Friends fetch method failed: ${friendsError.message}`,
               "debug"
             );
-            // Continue to next method if this fails
           }
         }
 
@@ -154,7 +150,6 @@ export default {
           }
         }
 
-        // Method 4: Fall back to using the HTTP API directly
         if (backupData.friends.length === 0) {
           try {
             // Get config for token
@@ -192,7 +187,6 @@ export default {
             }
           } catch (httpError) {
             log(`Direct HTTP method failed: ${httpError.message}`, "debug");
-            // This is our last resort, so we'll just have to accept 0 friends if this fails
           }
         }
 
@@ -206,11 +200,9 @@ export default {
         "> 💾 **Creating backup...**\n> 👥 Collecting friends data... ✅\n> 🏠 Collecting servers data..."
       );
 
-      // Collect servers data using Discord.js client (much faster)
       try {
         // Use client.guilds.cache which is already loaded
         for (const [, guild] of client.guilds.cache) {
-          // Only collect basic information to keep the backup small and fast
           const serverData = {
             id: guild.id,
             name: guild.name,
@@ -268,7 +260,6 @@ export default {
     }
   },
 
-  // Helper method to make API requests using native https module
   makeApiRequest(endpoint, token) {
     return new Promise((resolve, reject) => {
       const options = {

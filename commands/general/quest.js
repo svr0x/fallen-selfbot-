@@ -110,7 +110,6 @@ async function getOrbBalance(token) {
             if (balance !== undefined && balance !== null) return balance;
         } catch {}
     }
-    // Last resort - parse from quests data
     try {
         const res = await axios.get('https://discord.com/api/v10/users/@me/quests?with_config=true', {
             headers: getHeaders(token)
@@ -170,7 +169,6 @@ export default {
             );
         }
 
-        // ── questlist / questrefresh / qlist / qs ─────────────────────
         if (['list', 'questlist', 'qlist', 'qs', 'refresh', 'questrefresh'].includes(sub)) {
             const fetchMsg = await message.channel.send('> Fetching quest data...');
             const quests = await getQuests(token);
@@ -186,7 +184,6 @@ export default {
             }
 
             const username = client.user.username;
-            // Use orb balance from gateway READY payload (most accurate)
             const orbBalance = client._orbBalance ?? await getOrbBalance(token) ?? 'N/A';
 
             // Helper to get proper quest name
@@ -197,7 +194,6 @@ export default {
                 || q.config?.title
                 || null;
 
-            // available = not claimed, not complete, has real name
             const available = quests.filter(q => {
                 if (!getQuestName(q)) return false;
                 const p = q.user_status?.progress?.quest_gem_count || q.user_status?.progress;
@@ -228,7 +224,6 @@ export default {
                     const p = q.user_status?.progress?.quest_gem_count || q.user_status?.progress;
                     const cur = p?.value || p?.current || 0;
                     const req = p?.required || p?.total || 1;
-                    // Only show % if has actual progress
                     const pctStr = cur > 0 ? ` — ${Math.floor((cur / req) * 100)}%` : '';
                     out += `> • ${name}${pctStr}\n`;
                 });

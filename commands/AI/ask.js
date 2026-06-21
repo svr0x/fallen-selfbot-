@@ -41,7 +41,6 @@ export default {
             let responseContent = chatCompletion.choices[0]?.message?.content;
 
             if (responseContent) {
-                // Discord message limit is 2000 characters, so we need to split if longer
                 if (responseContent.length > 2000) {
                     const chunks = responseContent.match(/[^]{1,2000}/g);
                     for (const chunk of chunks) {

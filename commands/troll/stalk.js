@@ -48,15 +48,11 @@ export default {
     }
   },
 
-  /**
-   * Start stalking a user
-   */
-  async startStalking(client, message, userInput) {
+    async startStalking(client, message, userInput) {
     try {
       // Simple user resolution like userinfo command
       let targetUser = null;
 
-      // Try to get user by mention first
       if (message.mentions.users.first()) {
         targetUser = message.mentions.users.first();
       } else {
@@ -124,15 +120,11 @@ export default {
     }
   },
 
-  /**
-   * Stop stalking a user
-   */
-  async stopStalking(client, message, userInput) {
+    async stopStalking(client, message, userInput) {
     try {
       // Simple user resolution like userinfo command
       let targetUser = null;
 
-      // Try to get user by mention first
       if (message.mentions.users.first()) {
         targetUser = message.mentions.users.first();
       } else {
@@ -198,10 +190,7 @@ export default {
     }
   },
 
-  /**
-   * List all stalked users
-   */
-  async listStalkedUsers(client, message) {
+    async listStalkedUsers(client, message) {
     try {
       const stalkedUsers = StalkManager.getStalkedUsers();
 

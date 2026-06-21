@@ -38,10 +38,8 @@ export default {
 
     const subcommand = args[0].toLowerCase();
 
-    // Check if user has an active viewing session
     const viewTask = client.viewTasks?.get(message.author.id);
 
-    // Handle navigation commands if there's an active viewing session
     if (viewTask) {
       // Handle "next" command
       if (subcommand === "next") {
@@ -119,7 +117,6 @@ export default {
         const fileSizeKB = Math.round(stats.size / 1024);
         const createdDate = stats.birthtime.toLocaleDateString();
 
-        // Try to read basic info from backup
         try {
           const backupData = JSON.parse(fs.readFileSync(filePath, "utf8"));
           const friendCount = backupData.statistics?.total_friends || 0;
@@ -160,7 +157,6 @@ export default {
       const metadata = backupData.metadata || {};
       const stats = backupData.statistics || {};
 
-      // Create a task for this viewing session
       const taskId = `view_backup_${message.author.id}`;
       const viewTask = {
         id: taskId,
@@ -172,7 +168,6 @@ export default {
         message: null,
       };
 
-      // Store the task in client for reference
       if (!client.viewTasks) client.viewTasks = new Map();
       client.viewTasks.set(message.author.id, viewTask);
 

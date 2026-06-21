@@ -5,12 +5,7 @@ export default {
     name: 'relationshipAdd', // This is the correct event name for discord.js-selfbot-v13
     once: false,
     
-    /**
-     * Handle friend add events
-     * @param {Client} client - Discord.js client instance
-     * @param {string|Object} relationship - The relationship object or user ID
-     */
-    execute: async (client, relationship) => {
+        execute: async (client, relationship) => {
         try {
             // Skip if relationship logging is disabled
             if (!client.config.relationship_logs || !client.config.relationship_logs.enabled) {
@@ -22,12 +17,10 @@ export default {
                 log(`[DEBUG] relationshipAdd data: ${JSON.stringify(relationship)}`, 'debug');
             }
             
-            // In discord.js-selfbot-v13, the relationship parameter can be just a user ID string
             // or an object with relationship details
             let userId;
             
             if (typeof relationship === 'string') {
-                // If it's just a string, it's the user ID
                 userId = relationship;
             } else {
                 // It's an object with properties

@@ -1,23 +1,26 @@
 rpc:
   enabled: true
-  application_id: '1306468377539379241'
+  application_id: "1306468377539379241"
+
   default:
-    type: PLAYING
-    name: fallen
-    details: ''
-    state: eeeenggkk engott
-    url: ''
+    type: "PLAYING"
+    name: "fallen"
+    details: ""
+    state: ""
+    url: ""
+
     party:
-      current: 99999999
-      max: 99999999
-      id: 751ef278-c107-44ac-a55e-fde70975a7c3
+      current: 999
+      max: 999
+
     timestamps:
       start: null
       end: null
+
     assets:
-      large_image: >-
-        https://cdn.discordapp.com/attachments/1504824637719314512/1517902413846020116/animee.gif?ex=6a37f848&is=6a36a6c8&hm=8dcaa308c0575180bf1794a26b5f7bd4f4eb84d5177834da920f1b93d3d6bb46&
-      large_text: fallen
-      small_image: ''
-      small_text: ''
+      large_image: "https://cdn.discordapp.com/attachments/1487476599841492995/1513462496499859466/7e93fb6c674d298e51783d19ed74d005.jpg"
+      large_text: "fallen"
+      small_image: ""
+      small_text: ""
+
     buttons: []

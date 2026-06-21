@@ -5,14 +5,8 @@ export default {
   name: "messageDelete",
   once: false,
 
-  /**
-   * Handle message deletion events
-   * @param {Client} client - Discord.js client instance
-   * @param {Message} message - The deleted message
-   */
-  execute: async (client, message) => {
+    execute: async (client, message) => {
     try {
-      // Initialize the deleted messages cache if it doesn't exist
       if (!client._deletedMessages) {
         client._deletedMessages = new Map();
         log("Initialized deleted messages cache", "debug");
@@ -24,13 +18,11 @@ export default {
         return;
       }
 
-      // Skip if the message is from a bot
       if (message.author.bot) {
         log(`Skipping bot message from ${message.author.tag}`, "debug");
         return;
       }
 
-      // Skip if the message is from the selfbot
       if (message.author.id === client.user.id) {
         log("Skipping own message in messageDelete event", "debug");
         return;
@@ -43,7 +35,6 @@ export default {
         "debug"
       );
 
-      // Store the deleted message in the cache
       client._deletedMessages.set(message.channel.id, {
         content: message.content || "",
         author: {

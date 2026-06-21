@@ -1,88 +1,27 @@
-/**
- * TASK MANAGER MODULE
- *
- * This module provides comprehensive task management for long-running operations
- * in the Discord selfbot. It handles:
- * - Task lifecycle management (create, track, destroy)
- * - Interval and timeout management with automatic cleanup
- * - Abort signal handling for graceful cancellation
- * - Resource cleanup to prevent memory leaks
- * - Graceful shutdown support
- *
- * The TaskManager is essential for commands that run continuously (like stalking)
- * or need to be cancelled cleanly when the bot shuts down.
- *
- * @module utils/TaskManager
- * @author svrOx.
- */
 
 import { log } from "./functions.js";
 
-/**
- * TaskManager Class
- *
- * Manages all long-running tasks, intervals, and timeouts in the selfbot.
- * Provides methods to create, track, and clean up tasks properly.
- *
- * @class TaskManager
- * @description Central task management system that prevents memory leaks
- *              and ensures proper cleanup of all running operations.
- */
 class TaskManager {
-  /**
-   * Initialize the TaskManager
-   *
-   * @constructor
-   * @description Sets up the internal data structures for tracking tasks,
-   *              intervals, timeouts, and abort controllers.
-   */
-  constructor() {
-    // Map to store active tasks: taskId -> task object
+    constructor() {
     this.tasks = new Map();
 
-    // Map to store intervals associated with tasks: taskId -> Set of intervalIds
     this.intervals = new Map();
 
-    // Map to store timeouts associated with tasks: taskId -> Set of timeoutIds
     this.timeouts = new Map();
 
-    // Map to store abort controllers for task cancellation: taskId -> AbortController
     this.abortControllers = new Map();
 
     log("Task Manager initialized.", "info");
   }
 
-  /**
-   * Create a new managed task
-   *
-   * @method createTask
-   * @param {string} name - The name/type of the task (e.g., 'stalk', 'spam', 'monitor')
-   * @param {string} guildId - The guild ID where the task is running (use 'global' for non-guild tasks)
-   * @returns {Object|null} Task object with management methods, or null if task already exists
-   *
-   * @description Creates a new task with automatic resource management.
-   *              Each task gets its own abort controller for cancellation
-   *              and methods to register intervals/timeouts for cleanup.
-   *
-   * @example
-   * // Create a stalking task
-   * const stalkTask = TaskManager.createTask('stalk', message.guild.id);
-   * if (stalkTask) {
-   *   // Use the task's abort signal for fetch operations
-   *   const response = await fetch(url, { signal: stalkTask.signal });
-   * }
-   */
-  createTask(name, guildId) {
-    // Generate unique task ID combining name and guild
+    createTask(name, guildId) {
     const taskId = `${name}:${guildId}`;
 
-    // Check if task already exists to prevent duplicates
     if (this.tasks.has(taskId)) {
       log(`Task ${taskId} already exists.`, "warn");
       return null;
     }
 
-    // Create abort controller for graceful task cancellation
     const abortController = new AbortController();
     this.abortControllers.set(taskId, abortController);
 
@@ -96,18 +35,7 @@ class TaskManager {
       status: "running",
       signal: abortController.signal, // For fetch operations and other cancellable operations
 
-      /**
-       * Register an interval with this task for automatic cleanup
-       *
-       * @method registerInterval
-       * @param {number} intervalId - The interval ID returned by setInterval()
-       * @returns {number} The same interval ID for chaining
-       *
-       * @example
-       * const intervalId = setInterval(callback, 1000);
-       * task.registerInterval(intervalId);
-       */
-      registerInterval: (intervalId) => {
+            registerInterval: (intervalId) => {
         if (!this.intervals.has(taskId)) {
           this.intervals.set(taskId, new Set());
         }
@@ -115,18 +43,7 @@ class TaskManager {
         return intervalId;
       },
 
-      /**
-       * Register a timeout with this task for automatic cleanup
-       *
-       * @method registerTimeout
-       * @param {number} timeoutId - The timeout ID returned by setTimeout()
-       * @returns {number} The same timeout ID for chaining
-       *
-       * @example
-       * const timeoutId = setTimeout(callback, 5000);
-       * task.registerTimeout(timeoutId);
-       */
-      registerTimeout: (timeoutId) => {
+            registerTimeout: (timeoutId) => {
         if (!this.timeouts.has(taskId)) {
           this.timeouts.set(taskId, new Set());
         }
@@ -134,37 +51,15 @@ class TaskManager {
         return timeoutId;
       },
 
-      /**
-       * Stop the task normally (completed successfully)
-       *
-       * @method stop
-       * @returns {boolean} True if task was stopped successfully
-       *
-       * @example
-       * // Stop the task when work is complete
-       * task.stop();
-       */
-      stop: () => {
+            stop: () => {
         return this.destroyTask(taskId, "completed");
       },
 
-      /**
-       * Abort all operations associated with this task
-       *
-       * @method abort
-       * @description Triggers the abort signal for all fetch operations
-       *              and other cancellable operations using this task's signal
-       *
-       * @example
-       * // Cancel all ongoing operations
-       * task.abort();
-       */
-      abort: () => {
+            abort: () => {
         abortController.abort();
       },
     };
 
-    // Store the task in our tracking map
     this.tasks.set(taskId, task);
     log(`Task ${taskId} created.`, "debug");
     return task;
@@ -182,8 +77,6 @@ class TaskManager {
 
   destroyTask(taskId, reason = "cancelled") {
     if (!this.tasks.has(taskId)) {
-      // Task might have already been destroyed or never existed
-      // This is normal during cleanup operations, so log as debug instead of warn
       log(
         `Task ${taskId} not found for destruction (already cleaned up).`,
         "debug"
@@ -197,7 +90,6 @@ class TaskManager {
     let intervalsCleared = 0;
     let timeoutsCleared = 0;
 
-    // Clear all intervals associated with this task
     if (this.intervals.has(taskId)) {
       const intervalSet = this.intervals.get(taskId);
       for (const intervalId of intervalSet) {
@@ -214,7 +106,6 @@ class TaskManager {
       this.intervals.delete(taskId);
     }
 
-    // Clear all timeouts associated with this task
     if (this.timeouts.has(taskId)) {
       const timeoutSet = this.timeouts.get(taskId);
       for (const timeoutId of timeoutSet) {
@@ -236,7 +127,6 @@ class TaskManager {
       try {
         const controller = this.abortControllers.get(taskId);
         if (!controller.signal.aborted) {
-          // Use the abort reason parameter directly without trying to set a custom property
           controller.abort(reason);
         }
       } catch (error) {
@@ -248,7 +138,6 @@ class TaskManager {
       this.abortControllers.delete(taskId);
     }
 
-    // Remove the task from the tasks map
     this.tasks.delete(taskId);
     log(
       `Task ${taskId} destroyed successfully. Cleared ${intervalsCleared} intervals, ${timeoutsCleared} timeouts.`,
@@ -309,7 +198,6 @@ class TaskManager {
 
   createTimeout(taskId, callback, delay) {
     if (!this.tasks.has(taskId)) {
-      // Task was already destroyed, silently return null instead of throwing
       return null;
     }
 

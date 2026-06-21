@@ -48,7 +48,6 @@ export default {
             return message.channel.send(`> ❌ Role not found!`);
         }
 
-        // Prevent role management beyond user's highest role
         if (role.position >= message.member.roles.highest.position) {
             return message.channel.send(`> ❌ You can't manage a role higher than or equal to your highest role.`);
         }

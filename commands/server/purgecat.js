@@ -22,12 +22,10 @@ export default {
 
     let category;
 
-    // Check if input is a category ID
     if (/^\d+$/.test(categoryInput)) {
       category = message.guild.channels.cache.get(categoryInput);
     }
 
-    // If not found by ID, try to find by name
     if (!category) {
       category = message.guild.channels.cache.find(
         (c) => c.name === categoryInput && c.type === "GUILD_CATEGORY"

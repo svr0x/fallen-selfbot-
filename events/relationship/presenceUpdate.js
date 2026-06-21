@@ -6,15 +6,8 @@ export default {
   name: "presenceUpdate",
   once: false,
 
-  /**
-   * Handle presence update events (status changes, activity changes)
-   * @param {Client} client - Discord.js client instance
-   * @param {Presence|null} oldPresence - The old presence
-   * @param {Presence} newPresence - The new presence
-   */
-  execute: async (client, oldPresence, newPresence) => {
+    execute: async (client, oldPresence, newPresence) => {
     try {
-      // Debug presence update if debug mode is enabled
       if (client.config.debug_mode && client.config.debug_mode.enabled) {
         log(`[DEBUG] presenceUpdate event received`, "debug");
 
@@ -64,7 +57,6 @@ export default {
         });
       }
 
-      // Skip if relationships manager is not available
       if (!client.relationships) {
         log(
           `[DEBUG] Skipping presenceUpdate: relationships manager not available`,
@@ -73,7 +65,6 @@ export default {
         return;
       }
 
-      // Check if the user is a friend - we need to be more thorough here
       let isFriend = false;
 
       // Method 1: Check relationships cache
@@ -89,7 +80,6 @@ export default {
         }
       }
 
-      // Method 2: Check if the user is in our DM list (friends often are)
       if (!isFriend && user.dmChannel) {
         isFriend = true;
         if (client.config.debug_mode && client.config.debug_mode.enabled) {
@@ -97,9 +87,7 @@ export default {
         }
       }
 
-      // Method 3: Check if we have mutual guilds with the user
       if (!isFriend && user.mutualGuilds && user.mutualGuilds.size > 0) {
-        // This is a weaker signal, but we'll use it if configured to track all users
         if (
           client.config.relationship_logs &&
           client.config.relationship_logs.track_all_users
@@ -114,7 +102,6 @@ export default {
         }
       }
 
-      // Skip if not a friend and we're not tracking all users
       if (!isFriend) {
         if (client.config.debug_mode && client.config.debug_mode.enabled) {
           log(`[DEBUG] Skipping presenceUpdate: user is not a friend`, "debug");
@@ -165,11 +152,9 @@ export default {
         });
       }
 
-      // Check for activity change - more detailed handling
       const oldActivities = oldPresence?.activities || [];
       const newActivities = newPresence.activities || [];
 
-      // Get the primary activity (usually the first one)
       const oldActivity = oldActivities.length > 0 ? oldActivities[0] : null;
       const newActivity = newActivities.length > 0 ? newActivities[0] : null;
 
@@ -274,12 +259,7 @@ export default {
     }
   },
 
-  /**
-   * Get activity type name
-   * @param {number} type - Activity type number
-   * @returns {string} - Activity type name
-   */
-  getActivityTypeName(type) {
+    getActivityTypeName(type) {
     switch (type) {
       case 0:
         return "Playing";

@@ -14,13 +14,7 @@ export default {
   permissions: ["ManageChannels"],
   cooldown: 60,
 
-  /**
-   * Execute the channels_nuke command
-   * @param {Client} client - Discord.js client instance
-   * @param {Message} message - The message object
-   * @param {Array} args - Command arguments
-   */
-  execute: async (client, message, args) => {
+    execute: async (client, message, args) => {
     try {
       if (message.author.id !== client.user.id) return;
 
@@ -96,7 +90,6 @@ export default {
 
         log(`All channels deleted successfully`, "debug");
 
-        // Verify that no channels are left (except required ones)
         const remainingChannels = message.guild.channels.cache.filter(
           (ch) => !["rules", "moderator-only"].includes(ch.name)
         );

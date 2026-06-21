@@ -31,7 +31,6 @@ export default {
                     const userId = args[0].replace(/[^0-9]/g, ''); // Extract ID from potential mention or raw ID
                     if (userId) {
                         try {
-                            // Force fetch user to ensure banner property is populated
                             const fetchedUser = await client.users.fetch(userId, { force: true });
                             if (fetchedUser) {
                                 targetUser = fetchedUser;
@@ -44,7 +43,6 @@ export default {
                             return message.channel.send(`> error: Invalid argument or user not found. Usage: \`${client.prefix}banner [user mention/id | server]\``);
                         }
                     } else {
-                        // If no valid argument, default to author
                         targetUser = message.author;
                         bannerName = "Your";
                     }
@@ -60,7 +58,6 @@ export default {
         if (targetGuild) {
             bannerURL = targetGuild.bannerURL({ size: 1024 });
         } else if (targetUser) {
-            // Ensure the user object has the banner property populated by re-fetching with force: true
             const fullUser = await client.users.fetch(targetUser.id, { force: true });
             bannerURL = fullUser.bannerURL({ size: 1024 });
         }

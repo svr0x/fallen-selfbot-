@@ -72,7 +72,6 @@ export default {
             );
           }
 
-          // Small delay to avoid rate limits with cancellation support
           await new Promise((resolve) => {
             const timeout = setTimeout(resolve, 1000);
             if (task.signal) {

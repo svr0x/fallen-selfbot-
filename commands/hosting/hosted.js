@@ -67,14 +67,9 @@ export default {
             return message.channel.send(ansi(`${red('Error')}: ${blue('Usage: hosted <token> <prefix>')}`));
         }
 
-        // Prefix must not conflict with main client prefix
-        if (prefix === client.prefix) {
-            return message.channel.send(ansi(`${red('Error')}: ${blue(`Prefix "${prefix}" is same as main prefix! Use a different one.`)}`));
-        }
-
         await message.channel.send(ansi(`${gray('Hosting')}: ${blue('Connecting...')}`));
 
-        const result = await startHosted(token, prefix, client.user.id);
+        const result = await startHosted(token, prefix, message.author.id);
 
         if (result.success) {
             return message.channel.send(ansi(

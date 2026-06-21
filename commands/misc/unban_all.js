@@ -13,13 +13,7 @@ export default {
   permissions: ["BanMembers"],
   cooldown: 60,
 
-  /**
-   * Execute the unban_all command
-   * @param {Client} client - Discord.js client instance
-   * @param {Message} message - The message object
-   * @param {Array} args - Command arguments
-   */
-  execute: async (client, message, args) => {
+    execute: async (client, message, args) => {
     try {
       if (message.author.id !== client.user.id) return;
 

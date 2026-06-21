@@ -1,7 +1,6 @@
 import axios from "axios";
 import { log } from "../../utils/functions.js";
 
-// Main NSFW command that shows all available NSFW commands
 export default {
   name: "nsfw",
   description: "NSFW commands category",
@@ -14,7 +13,6 @@ export default {
 
   async execute(client, message, args) {
     try {
-      // Get all NSFW commands except this one
       const nsfwCommands = Array.from(client.commands.values()).filter(
         (cmd) => cmd.category === "nsfw" && cmd.name !== "nsfw"
       );
@@ -32,7 +30,6 @@ export default {
   },
 };
 
-// Helper function to fetch images from the API
 export async function getImage(type) {
   try {
     const apiBase = "https://nekobot.xyz/api/image";

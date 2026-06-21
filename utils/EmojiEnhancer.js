@@ -12,30 +12,19 @@ class EmojiEnhancer {
     this.ensureTempDir();
   }
 
-  /**
-   * Ensure temp directory exists
-   */
-  ensureTempDir() {
+    ensureTempDir() {
     if (!fs.existsSync(this.tempDir)) {
       fs.mkdirSync(this.tempDir, { recursive: true });
     }
   }
 
-  /**
-   * Main enhancement function
-   * @param {Buffer} imageBuffer - Original image buffer
-   * @param {boolean} isAnimated - Whether the image is animated
-   * @returns {Promise<Buffer>} - Enhanced image buffer
-   */
-  async enhanceImage(imageBuffer, isAnimated = false) {
+    async enhanceImage(imageBuffer, isAnimated = false) {
     try {
-      // Skip enhancement for animated images (complex to process)
       if (isAnimated) {
         log("Skipping enhancement for animated image", "debug");
         return imageBuffer;
       }
 
-      // Skip enhancement for large images (already good quality)
       if (imageBuffer.length > 100000) {
         // 100KB
         log("Skipping enhancement for large image", "debug");
@@ -75,12 +64,7 @@ class EmojiEnhancer {
     }
   }
 
-  /**
-   * Enhance image using UpscalerJS with ESRGAN-thick model
-   * @param {Buffer} imageBuffer - Original image buffer
-   * @returns {Promise<Buffer|null>} - Enhanced image buffer or null
-   */
-  async enhanceWithUpscalerJS(imageBuffer) {
+    async enhanceWithUpscalerJS(imageBuffer) {
     try {
       log("Attempting enhancement with UpscalerJS", "debug");
 
@@ -88,7 +72,6 @@ class EmojiEnhancer {
       const Upscaler = (await import("upscaler")).default;
       const x4 = (await import("@upscalerjs/esrgan-thick/4x")).default;
 
-      // Create upscaler instance with 4x ESRGAN model
       const upscaler = new Upscaler({
         model: x4,
         patchSize: 64, // Smaller patches for better CPU performance
@@ -124,12 +107,7 @@ class EmojiEnhancer {
     }
   }
 
-  /**
-   * Enhance image using Pixteroid (Real-ESRGAN via NCNN)
-   * @param {Buffer} imageBuffer - Original image buffer
-   * @returns {Promise<Buffer|null>} - Enhanced image buffer or null
-   */
-  async enhanceWithPixteroid(imageBuffer) {
+    async enhanceWithPixteroid(imageBuffer) {
     try {
       log("Attempting enhancement with Pixteroid", "debug");
 
@@ -173,12 +151,7 @@ class EmojiEnhancer {
     }
   }
 
-  /**
-   * Detect image MIME type from buffer
-   * @param {Buffer} buffer - Image buffer
-   * @returns {string} - MIME type
-   */
-  detectImageType(buffer) {
+    detectImageType(buffer) {
     // Check PNG signature
     if (
       buffer.length >= 8 &&
@@ -216,11 +189,7 @@ class EmojiEnhancer {
     return "image/png";
   }
 
-  /**
-   * Clean up temporary files
-   * @param {string[]} filePaths - Array of file paths to delete
-   */
-  cleanupTempFiles(filePaths) {
+    cleanupTempFiles(filePaths) {
     for (const filePath of filePaths) {
       try {
         if (fs.existsSync(filePath)) {
@@ -236,11 +205,7 @@ class EmojiEnhancer {
     }
   }
 
-  /**
-   * Check if enhancement libraries are available
-   * @returns {Promise<Object>} - Availability status
-   */
-  async checkAvailability() {
+    async checkAvailability() {
     const status = {
       upscalerjs: false,
       pixteroid: false,
@@ -268,13 +233,7 @@ class EmojiEnhancer {
     return status;
   }
 
-  /**
-   * Get enhancement info for display
-   * @param {Buffer} originalBuffer - Original image buffer
-   * @param {Buffer} enhancedBuffer - Enhanced image buffer
-   * @returns {Object} - Enhancement information
-   */
-  getEnhancementInfo(originalBuffer, enhancedBuffer) {
+    getEnhancementInfo(originalBuffer, enhancedBuffer) {
     const originalSize = Math.round(originalBuffer.length / 1024);
     const enhancedSize = Math.round(enhancedBuffer.length / 1024);
     const wasEnhanced = enhancedBuffer.length !== originalBuffer.length;

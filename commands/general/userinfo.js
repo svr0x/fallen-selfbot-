@@ -11,18 +11,11 @@ export default {
   permissions: ["SendMessages"],
   cooldown: 10,
 
-  /**
-   * Execute the userinfo command
-   * @param {Client} client - Discord.js client instance
-   * @param {Message} message - The message object
-   * @param {Array} args - Command arguments
-   */
-  execute: async (client, message, args) => {
+    execute: async (client, message, args) => {
     let targetUser = message.author; // Default to message author
     let targetMember = null;
 
     if (message.guild) {
-      // Attempt to find a member by mention or ID
       const fetchedMember =
         message.mentions.members.first() ||
         (await message.guild.members.fetch(args[0]).catch(() => null));
@@ -31,12 +24,10 @@ export default {
         targetMember = fetchedMember;
         targetUser = fetchedMember.user;
       } else {
-        // If no specific target, use the message author's member object
         targetMember = message.member;
         targetUser = message.author;
       }
     } else {
-      // In DM context, targetUser is message.author and targetMember remains null
       targetUser = message.author;
       targetMember = null;
     }
@@ -44,7 +35,6 @@ export default {
     try {
       const userStatus = targetMember?.presence?.status ?? "offline";
 
-      // Safe role handling with proper null checks
       let userRoles = "N/A (DM)";
       let highestRole = "N/A (DM)";
 

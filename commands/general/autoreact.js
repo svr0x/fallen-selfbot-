@@ -1,19 +1,6 @@
-/**
- * +ar <emoji> [flags]           - autoreact on own messages
- * +ar @user <emoji> [flags]     - autoreact on target user messages
- * +ar <amount> <emoji> -alts            - alt tokens react on own messages
- * +ar @user <amount> <emoji> -alts      - alt tokens react on target user messages
- * +ar clear                     - clear own autoreact
- * +ar clear @user               - clear target user autoreact
- * 
- * flags: -boost or -burst = super/burst react
- *        -alts = use your own hosted alt tokens instead of this client
- * max 5 emojis
- */
 
 import { getAltClients, ownerIdFor } from '../../utils/AltsManager.js';
 
-// In-memory store: { self: { emojis, burst }, targets: Map<userId, { emojis, burst }> }
 const arStore = new Map(); // clientId -> store
 const altArStore = new Map(); // ownerId -> { self: { amount, emojis }, targets: Map<userId, { amount, emojis }> }
 

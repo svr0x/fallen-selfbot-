@@ -1,6 +1,5 @@
 import { Client } from 'discord.js-selfbot-v13';
 
-// ownerId -> Map<token, { client, username, id }>
 const altsByOwner = new Map();
 
 function getAltsMap(ownerId) {
@@ -62,7 +61,5 @@ export function getAltClients(ownerId, amount) {
 }
 
 export function ownerIdFor(client) {
-    // Always key by this client's OWN id — keeps alts isolated per
-    // account (main or hosted), never shared across hosted users.
     return client.user.id;
 }
