@@ -34,7 +34,7 @@
 
 ## `> about`
 
-**fallen** is a free, open-source Discord selfbot built for mobile and desktop. runs on Termux — no PC needed. 130+ commands covering moderation, server tools, fun, AI, multi-token hosting, and more.
+**fallen selfbot** is a free, open-source Discord selfbot built for mobile and desktop. runs on Termux — no PC needed. 130+ commands covering moderation, server tools, fun, AI, multi-token hosting, and more.
 
 built in 1 month. built for mobile users.
 
