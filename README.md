@@ -1,3 +1,4 @@
+<meta name="google-site-verification" content="9xq3Y1fi1dBMRY_Lr5XejqqVdvtjv5vlWnmg8dfxdqs" />
 <div align="center">
 
 <img src="https://file.garden/ai5wJPrOLRCONDDM/fallen.png" alt="fallen Logo" width="200" height="200">
@@ -35,7 +36,7 @@
 
 **fallen** is an experimental, open-source, multifunctional Discord selfbot built with modern JavaScript and Discord.js-selfbot-v13. It features comprehensive command handling, advanced task management, and a wide array of utilities designed for power users.
 
-1### ✨ **Key Features**
+✨ **Key Features**
 
 <div align="center">
 
