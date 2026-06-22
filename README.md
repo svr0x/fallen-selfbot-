@@ -10,8 +10,8 @@
 <br>
 
 ```
-── フォールン ──
-NEVER RISE. ONLY FALL.
+   ── フォールン ──
+      CUTE LANG 
 ```
 
 [![Discord](https://img.shields.io/badge/Discord-Join-7289da?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/DWxCXT8ch5)
@@ -36,7 +36,7 @@ NEVER RISE. ONLY FALL.
 
 **fallen** is a free, open-source Discord selfbot built for mobile and desktop. runs on Termux — no PC needed. 130+ commands covering moderation, server tools, fun, AI, multi-token hosting, and more.
 
-built in 1 month. built for power users.
+built in 1 month. built for mobile users.
 
 ---
 
@@ -208,7 +208,7 @@ MIT — [LICENSE](LICENSE)
 **made with ❤️ by [svr0x](https://github.com/svr0x) 🇵🇭**
 
 ```
-⚡ fallen — Never Rise. Only Fall. ⚡
+⚡ fallen — be happy with you have while working for what you want ⚡
 ```
 
 [![Visitors](https://visitor-badge.laobi.icu/badge?page_id=svr0x.fallen-selfbot-)](https://github.com/svr0x/fallen-selfbot-)
