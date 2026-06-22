@@ -100,20 +100,16 @@ export class RpcManager {
     if (/^\d+$/.test(imageInput)) return imageInput;
     if (imageInput.startsWith('mp:')) return imageInput;
 
-    const isSignedAttachment = imageInput.includes('?ex=') || imageInput.includes('&ex=');
+    const cleanUrl = imageInput.split('?')[0];
 
-    if (!isSignedAttachment) {
-      const cleanUrl = imageInput.split('?')[0];
+    if (cleanUrl.includes('cdn.discordapp.com/')) {
+      const match = cleanUrl.match(/cdn\.discordapp\.com\/(.+)/);
+      if (match) return `mp:${match[1]}`;
+    }
 
-      if (cleanUrl.includes('cdn.discordapp.com/')) {
-        const match = cleanUrl.match(/cdn\.discordapp\.com\/(.+)/);
-        if (match) return `mp:${match[1]}`;
-      }
-
-      if (cleanUrl.includes('media.discordapp.net/')) {
-        const match = cleanUrl.match(/media\.discordapp\.net\/(.+)/);
-        if (match) return `mp:${match[1]}`;
-      }
+    if (cleanUrl.includes('media.discordapp.net/')) {
+      const match = cleanUrl.match(/media\.discordapp\.net\/(.+)/);
+      if (match) return `mp:${match[1]}`;
     }
 
     if (imageInput.startsWith('https://') || imageInput.startsWith('http://')) {
