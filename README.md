@@ -10,8 +10,8 @@
 <br>
 
 ```
-   ── フォールン ──
-      CUTE LANG 
+         ── フォールン ──
+           CUTE LANG 
 ```
 
 [![Discord](https://img.shields.io/badge/Discord-Join-7289da?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/DWxCXT8ch5)
