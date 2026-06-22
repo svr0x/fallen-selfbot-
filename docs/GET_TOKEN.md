@@ -265,7 +265,7 @@ selfbot:
 ### **Still Having Issues?**
 
 - **Join our support server**: https://discord.gg/ypXHdGQaq
-- **Contact developers**: `svrOx.` or `marcel4real`
+- **Contact developers**: `svrOx`
 - **Check GitHub issues**: https://github.com/svrOx./fallen
 
 ---
